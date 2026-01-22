@@ -40,7 +40,7 @@ endif
 # Tools
 
 .PHONY: tools_install
-tools_install: arm_sdk_install openocd_install
+tools_install: arm_sdk_install # openocd_install
 
 .PHONY: tools_clean
 tools_clean: arm_sdk_clean openocd_clean
@@ -76,7 +76,7 @@ $(ARM_SDK_INSTALL_MARKER):
 arm_sdk_download: | $(DL_DIR)
 arm_sdk_download: $(DL_DIR)/$(ARM_SDK_FILE)
 $(DL_DIR)/$(ARM_SDK_FILE):
-	$(V1) curl -L -k -o "$(DL_DIR)/$(ARM_SDK_FILE)" -z "$(DL_DIR)/$(ARM_SDK_FILE)" "$(ARM_SDK_URL)"
+	$(V1) curl -L -k -o "$(DL_DIR)/$(ARM_SDK_FILE)" "$(ARM_SDK_URL)"
 
 .PHONY: arm_sdk_clean
 arm_sdk_clean:
@@ -116,7 +116,7 @@ $(OPENOCD_INSTALL_MARKER):
 openocd_download: | $(DL_DIR)
 openocd_download: $(DL_DIR)/$(OPENOCD_FILE)
 $(DL_DIR)/$(OPENOCD_FILE):
-	$(V1) curl -L -k -o "$(DL_DIR)/$(OPENOCD_FILE)" -z "$(DL_DIR)/$(OPENOCD_FILE)" "$(OPENOCD_URL)"
+	$(V1) curl -L -k -o "$(DL_DIR)/$(OPENOCD_FILE)" "$(OPENOCD_URL)"
 
 .PHONY: openocd_clean
 openocd_clean:
