@@ -63,6 +63,7 @@ private:
     NoteSequenceListModel _listModel;
 
     StepSelection<CONFIG_STEP_COUNT> _stepSelection;
+    StepSelection<CONFIG_STEP_COUNT> _lastStepSelection;
 
     Container<NoteSequenceBuilder> _builderContainer;
 };

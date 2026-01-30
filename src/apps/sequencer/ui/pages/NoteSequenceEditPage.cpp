@@ -323,8 +323,13 @@ void NoteSequenceEditPage::keyPress(KeyPressEvent &event) {
     }
 
     if (key.isEncoder()) {
-        if (!_showDetail && _stepSelection.any() && key.shiftModifier()) {
-            _stepSelection.clear();
+        if (!_showDetail && key.shiftModifier()) {
+            if (_stepSelection.any()) {
+                _lastStepSelection = _stepSelection;
+                _stepSelection.clear();
+            } else {
+                _stepSelection = _lastStepSelection;
+            }
         } else if (!_showDetail && _stepSelection.any() && allSelectedStepsActive()) {
             setSelectedStepsGate(false);
         } else {
