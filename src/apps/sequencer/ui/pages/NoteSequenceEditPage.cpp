@@ -323,7 +323,9 @@ void NoteSequenceEditPage::keyPress(KeyPressEvent &event) {
     }
 
     if (key.isEncoder()) {
-        if (!_showDetail && _stepSelection.any() && allSelectedStepsActive()) {
+        if (!_showDetail && _stepSelection.any() && key.shiftModifier()) {
+            _stepSelection.clear();
+        } else if (!_showDetail && _stepSelection.any() && allSelectedStepsActive()) {
             setSelectedStepsGate(false);
         } else {
             setSelectedStepsGate(true);
