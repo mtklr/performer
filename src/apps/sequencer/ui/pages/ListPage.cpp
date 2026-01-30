@@ -70,7 +70,7 @@ void ListPage::keyPress(KeyPressEvent &event) {
             setSelectedRow(selectedRow() + 1);
         }
         event.consume();
-    } else if (key.isEncoder()) {
+    } else if (key.isEncoder() || key.is(Key::F4)) {
         _edit = !_edit;
         event.consume();
     }
