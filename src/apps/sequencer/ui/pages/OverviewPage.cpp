@@ -4,7 +4,7 @@
 
 #include "ui/painters/WindowPainter.h"
 
-static void drawNoteTrack(Canvas &canvas, int trackIndex, const NoteTrackEngine &trackEngine, const NoteSequence &sequence) {
+static int drawNoteTrack(Canvas &canvas, int trackIndex, const NoteTrackEngine &trackEngine, const NoteSequence &sequence) {
     canvas.setBlendMode(BlendMode::Set);
 
     int stepOffset = (std::max(0, trackEngine.currentStep()) / 16) * 16;
@@ -29,6 +29,8 @@ static void drawNoteTrack(Canvas &canvas, int trackIndex, const NoteTrackEngine 
         //     canvas.drawRect(x + 1, y + 1, 6, 6);
         // }
     }
+
+    return trackEngine.currentStep();
 }
 
 static void drawCurve(Canvas &canvas, int x, int y, int w, int h, float &lastY, const Curve::Function function, float min, float max) {
@@ -53,7 +55,7 @@ static void drawCurve(Canvas &canvas, int x, int y, int w, int h, float &lastY, 
     lastY = fy0;
 }
 
-static void drawCurveTrack(Canvas &canvas, int trackIndex, const CurveTrackEngine &trackEngine, const CurveSequence &sequence) {
+static int drawCurveTrack(Canvas &canvas, int trackIndex, const CurveTrackEngine &trackEngine, const CurveSequence &sequence) {
     canvas.setBlendMode(BlendMode::Add);
     canvas.setColor(0xa);
 
@@ -80,6 +82,8 @@ static void drawCurveTrack(Canvas &canvas, int trackIndex, const CurveTrackEngin
         canvas.setColor(0xf);
         canvas.vline(x, y + 1, 7);
     }
+
+    return trackEngine.currentStep();
 }
 
 
@@ -94,16 +98,22 @@ void OverviewPage::exit() {
 }
 
 void OverviewPage::draw(Canvas &canvas) {
+    int currentStep = 0;
+    int stepOffset = 0;
+    int seqPage = 0;
+
     WindowPainter::clear(canvas);
 
     canvas.setFont(Font::Tiny);
     canvas.setBlendMode(BlendMode::Set);
     canvas.setColor(0x7);
 
-    canvas.vline(64 - 3, 0, 64);
-    canvas.vline(64 - 2, 0, 64);
-    canvas.vline(192 + 1, 0, 64);
-    canvas.vline(192 + 2, 0, 64);
+    if (_drawOverview) {
+        canvas.vline(64 - 3, 0, 64);
+        canvas.vline(64 - 2, 0, 64);
+        canvas.vline(192 + 1, 0, 64);
+        canvas.vline(192 + 2, 0, 64);
+    }
 
     for (int trackIndex = 0; trackIndex < 8; trackIndex++) {
         const auto &track = _project.track(trackIndex);
@@ -114,6 +124,10 @@ void OverviewPage::draw(Canvas &canvas) {
         canvas.setColor(0x7);
 
         int y = 5 + trackIndex * 8;
+
+        if (!_drawOverview) {
+            return;
+        }
 
         // track number / pattern number
         canvas.setColor(trackState.mute() ? 0x7 : 0xf);
@@ -131,10 +145,33 @@ void OverviewPage::draw(Canvas &canvas) {
 
         switch (track.trackMode()) {
         case Track::TrackMode::Note:
-            drawNoteTrack(canvas, trackIndex, trackEngine.as<NoteTrackEngine>(), track.noteTrack().sequence(trackState.pattern()));
+            currentStep = drawNoteTrack(canvas, trackIndex, trackEngine.as<NoteTrackEngine>(), track.noteTrack().sequence(trackState.pattern()));
+            stepOffset = (std::max(0, currentStep) / 16) * 16;
+            seqPage = 4 * stepOffset / 64;
+
+            canvas.setColor(0xf);
+            if (trackState.mute()) {
+                canvas.setColor(0x7);
+            }
+
+            if (_drawPageStepCount) {
+                canvas.drawText(38, y, FixedStringBuilder<8>("%d", seqPage + 1));
+                canvas.drawText(46, y, FixedStringBuilder<8>("%d", currentStep < 0 ? 1 : currentStep + 1));
+            }
             break;
         case Track::TrackMode::Curve:
-            drawCurveTrack(canvas, trackIndex, trackEngine.as<CurveTrackEngine>(), track.curveTrack().sequence(trackState.pattern()));
+            currentStep = drawCurveTrack(canvas, trackIndex, trackEngine.as<CurveTrackEngine>(), track.curveTrack().sequence(trackState.pattern()));
+            stepOffset = (std::max(0, currentStep) / 16) * 16;
+            seqPage = 4 * stepOffset / 64;
+            canvas.setColor(0xf);
+            if (trackState.mute()) {
+                canvas.setColor(0x7);
+            }
+
+            if (_drawPageStepCount) {
+                canvas.drawText(38, y, FixedStringBuilder<8>("%d", seqPage + 1));
+                canvas.drawText(46, y, FixedStringBuilder<8>("%d", currentStep < 0 ? 1 : currentStep + 1));
+            }
             break;
         case Track::TrackMode::MidiCv:
             break;
@@ -169,6 +206,15 @@ void OverviewPage::keyUp(KeyEvent &event) {
 
 void OverviewPage::keyPress(KeyPressEvent &event) {
     const auto &key = event.key();
+
+    if (key.is(Key::F4)) {
+        if (key.shiftModifier()) {
+            _drawOverview = !_drawOverview;
+        } else {
+            _drawPageStepCount = !_drawPageStepCount;
+        }
+        event.consume();
+    }
 
     if (key.isGlobal()) {
         return;
