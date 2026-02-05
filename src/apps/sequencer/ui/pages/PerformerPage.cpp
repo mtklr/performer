@@ -202,7 +202,11 @@ void PerformerPage::keyPress(KeyPressEvent &event) {
         case Function::Sync:
             break;
         case Function::Unmute:
-            playState.unmuteAll(executeType);
+            if (key.shiftModifier()) {
+                playState.toggleMuteAll(executeType);
+            } else {
+                playState.unmuteAll(executeType);
+            }
             break;
         case Function::Fill:
             updateFills();

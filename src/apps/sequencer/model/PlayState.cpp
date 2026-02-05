@@ -96,6 +96,12 @@ void PlayState::unmuteAll(ExecuteType executeType) {
     }
 }
 
+void PlayState::toggleMuteAll(ExecuteType executeType) {
+    for (int track = 0; track < CONFIG_TRACK_COUNT; ++track) {
+        toggleMuteTrack(track);
+    }
+}
+
 void PlayState::soloTrack(int track, ExecuteType executeType) {
     for (int trackIndex = 0; trackIndex < CONFIG_TRACK_COUNT; ++trackIndex) {
         if (track == trackIndex) {

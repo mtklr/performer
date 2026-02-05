@@ -268,6 +268,7 @@ public:
 
     void muteAll(ExecuteType executeType = Immediate);
     void unmuteAll(ExecuteType executeType = Immediate);
+    void toggleMuteAll(ExecuteType executeType = Immediate);
 
     // solos
 
