@@ -17,11 +17,17 @@ static int drawNoteTrack(Canvas &canvas, int trackIndex, const NoteTrackEngine &
         int x = 64 + i * 8;
 
         if (trackEngine.currentStep() == stepIndex) {
-            canvas.setColor(step.gate() ? 0xf : 0xa);
-            canvas.fillRect(x + 1, y + 1, 6, 6);
+            canvas.setColor(step.gate() ? 0xf : 0x7);
+            canvas.drawRect(x + 1, y + 1, 6, 6);
+            if (step.gate()) {
+                canvas.fillRect(x + 3, y + 3, 2, 2);
+            }
         } else {
             canvas.setColor(step.gate() ? 0x7 : 0x3);
-            canvas.fillRect(x + 1, y + 1, 6, 6);
+            canvas.drawRect(x + 1, y + 1, 6, 6);
+            if (step.gate()) {
+                canvas.fillRect(x + 3, y + 3, 2, 2);
+            }
         }
 
         // if (trackEngine.currentStep() == stepIndex) {
@@ -137,7 +143,10 @@ void OverviewPage::draw(Canvas &canvas) {
         // gate output
         bool gate = _engine.gateOutput() & (1 << trackIndex);
         canvas.setColor(gate ? 0xf : 0x7);
-        canvas.fillRect(256 - 48 + 1, trackIndex * 8 + 1, 6, 6);
+        canvas.drawRect(256 - 48 + 1, trackIndex * 8 + 1, 6, 6);
+        if (gate) {
+            canvas.fillRect(256 - 48 + 3, trackIndex * 8 + 3, 2, 2);
+        }
 
         // cv output
         canvas.setColor(0xf);
