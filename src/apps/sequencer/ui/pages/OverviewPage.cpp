@@ -1,5 +1,7 @@
 #include "OverviewPage.h"
 
+#include "Pages.h"
+
 #include "model/NoteTrack.h"
 
 #include "ui/painters/WindowPainter.h"
@@ -215,6 +217,15 @@ void OverviewPage::keyUp(KeyEvent &event) {
 
 void OverviewPage::keyPress(KeyPressEvent &event) {
     const auto &key = event.key();
+
+#ifdef CONFIG_ENABLE_INTRO
+    if (key.is(Key::F0)) {
+        if (key.shiftModifier()) {
+            _manager.pages().intro.show();
+        }
+        event.consume();
+    }
+#endif
 
     if (key.is(Key::F4)) {
         if (key.shiftModifier()) {
