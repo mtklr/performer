@@ -23,6 +23,8 @@ set(sources
     engine/generators/Rhythm.cpp
     # intro
     intro/Intro.cpp
+    # starfield
+    stars/Stars.cpp
     # model
     model/Arpeggiator.cpp
     model/Calibration.cpp
@@ -90,6 +92,7 @@ set(sources
     ui/pages/RoutingPage.cpp
     ui/pages/SongPage.cpp
     ui/pages/StartupPage.cpp
+    ui/pages/StarsPage.cpp
     ui/pages/SystemPage.cpp
     ui/pages/TempoPage.cpp
     ui/pages/TextInputPage.cpp

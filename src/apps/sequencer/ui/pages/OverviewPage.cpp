@@ -227,6 +227,15 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
     }
 #endif
 
+#ifdef CONFIG_ENABLE_STARS
+    if (key.is(Key::F1)) {
+        if (key.shiftModifier()) {
+            _manager.pages().stars.show();
+        }
+        event.consume();
+    }
+#endif
+
     if (key.is(Key::F4)) {
         if (key.shiftModifier()) {
             _drawOverview = !_drawOverview;

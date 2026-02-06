@@ -37,6 +37,9 @@
 #ifdef CONFIG_ENABLE_ASTEROIDS
 #include "AsteroidsPage.h"
 #endif
+#ifdef CONFIG_ENABLE_STARS
+#include "StarsPage.h"
+#endif
 
 struct Pages {
     TopPage top;
@@ -78,6 +81,9 @@ struct Pages {
 #ifdef CONFIG_ENABLE_ASTEROIDS
     AsteroidsPage asteroids;
 #endif
+#ifdef CONFIG_ENABLE_STARS
+    StarsPage stars;
+#endif
 
     Pages(PageManager &manager, PageContext &context) :
         top(manager, context),
@@ -118,6 +124,9 @@ struct Pages {
 #endif
 #ifdef CONFIG_ENABLE_ASTEROIDS
         ,asteroids(manager, context)
+#endif
+#ifdef CONFIG_ENABLE_STARS
+        ,stars(manager, context)
 #endif
     {}
 };
