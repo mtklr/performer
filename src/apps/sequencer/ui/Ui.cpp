@@ -35,7 +35,9 @@ void Ui::init() {
     _pageManager.push(&_pages.top);
     _pages.top.init();
 #ifdef CONFIG_ENABLE_INTRO
+#ifdef CONFIG_STARTUP_INTRO
     _pageManager.push(&_pages.intro);
+#endif
 #endif
     _pageManager.push(&_pages.startup);
 
