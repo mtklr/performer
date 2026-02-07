@@ -57,6 +57,7 @@ void ProjectPage::keyPress(KeyPressEvent &event) {
         return;
     }
 
+#ifdef CONFIG_ENABLE_ASTEROIDS
     if (key.pageModifier()) {
         // easter egg
         if (key.is(Key::Step15)) {
@@ -64,6 +65,7 @@ void ProjectPage::keyPress(KeyPressEvent &event) {
         }
         return;
     }
+#endif
 
     if (key.is(Key::Encoder) && selectedRow() == 0) {
         _manager.pages().textInput.show("NAME:", _project.name(), Project::NameLength, [this] (bool result, const char *text) {
