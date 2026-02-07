@@ -40,6 +40,9 @@
 #ifdef CONFIG_ENABLE_STARS
 #include "StarsPage.h"
 #endif
+#ifdef CONFIG_ENABLE_FIRE
+#include "FirePage.h"
+#endif
 
 struct Pages {
     TopPage top;
@@ -84,6 +87,9 @@ struct Pages {
 #ifdef CONFIG_ENABLE_STARS
     StarsPage stars;
 #endif
+#ifdef CONFIG_ENABLE_FIRE
+    FirePage fire;
+#endif
 
     Pages(PageManager &manager, PageContext &context) :
         top(manager, context),
@@ -127,6 +133,9 @@ struct Pages {
 #endif
 #ifdef CONFIG_ENABLE_STARS
         ,stars(manager, context)
+#endif
+#ifdef CONFIG_ENABLE_FIRE
+        ,fire(manager, context)
 #endif
     {}
 };

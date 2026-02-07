@@ -236,6 +236,15 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
     }
 #endif
 
+#ifdef CONFIG_ENABLE_FIRE
+    if (key.is(Key::F2)) {
+        if (key.shiftModifier()) {
+            _manager.pages().fire.show();
+        }
+        event.consume();
+    }
+#endif
+
     if (key.is(Key::F4)) {
         if (key.shiftModifier()) {
             _drawOverview = !_drawOverview;

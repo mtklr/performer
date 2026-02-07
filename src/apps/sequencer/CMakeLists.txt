@@ -25,6 +25,8 @@ set(sources
     intro/Intro.cpp
     # starfield
     stars/Stars.cpp
+    # fire
+    fire/Fire.cpp
     # model
     model/Arpeggiator.cpp
     model/Calibration.cpp
@@ -75,6 +77,7 @@ set(sources
     ui/pages/CurveSequenceEditPage.cpp
     ui/pages/CurveSequencePage.cpp
     ui/pages/FileSelectPage.cpp
+    ui/pages/FirePage.cpp
     ui/pages/GeneratorPage.cpp
     ui/pages/GeneratorSelectPage.cpp
     ui/pages/IntroPage.cpp
