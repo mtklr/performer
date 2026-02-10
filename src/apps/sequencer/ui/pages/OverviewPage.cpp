@@ -27,9 +27,9 @@ static int drawNoteTrack(Canvas &canvas, int trackIndex, const NoteTrackEngine &
         } else {
             canvas.setColor(step.gate() ? 0x7 : 0x3);
             canvas.drawRect(x + 1, y + 1, 6, 6);
-            if (step.gate()) {
-                canvas.fillRect(x + 3, y + 3, 2, 2);
-            }
+            // if (step.gate()) {
+            //     canvas.fillRect(x + 3, y + 3, 2, 2);
+            // }
         }
 
         // if (trackEngine.currentStep() == stepIndex) {
