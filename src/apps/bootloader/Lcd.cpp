@@ -42,8 +42,8 @@ static InitCommand initCommands[] = {
     // 0xa0 = Enable external VSL
     // 0xb5 = Normal (reset)
     { 0xb4, 2, 0xa0, 0xb5 },
-    { 0xc1, 1, 0xff }, // Set Contrast Current
-    { 0xc7, 1, 0x0f }, // Master Contrast Current Control | 0x0f = no change
+    { 0xc1, 1, 0x7f }, // Set Contrast Current
+    { 0xc7, 1, 0x07 }, // Master Contrast Current Control | 0x0f = no change
     { 0xb9, 0 }, // Select Default Linear Gray Scale table
     { 0xb1, 1, 0xe2 }, // Set Phase Length | 0xe2 = Phase 1 period (reset phase length) = 5 DCLKs, Phase 2 period (first pre-charge phase length) = 14 DCLKs
     { 0xd1, 2, 0xa2, 0x20 }, // Display Enhancement B | 0xa2 = Normal (reset) | 0x20 = n/a
