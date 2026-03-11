@@ -112,16 +112,16 @@ void OverviewPage::draw(Canvas &canvas) {
 
     WindowPainter::clear(canvas);
 
+    if (!_drawOverview) return;
+
     canvas.setFont(Font::Tiny);
     canvas.setBlendMode(BlendMode::Set);
     canvas.setColor(0x7);
 
-    if (_drawOverview) {
-        canvas.vline(64 - 3, 0, 64);
-        canvas.vline(64 - 2, 0, 64);
-        canvas.vline(192 + 1, 0, 64);
-        canvas.vline(192 + 2, 0, 64);
-    }
+    canvas.vline(64 - 3, 0, 64);
+    canvas.vline(64 - 2, 0, 64);
+    canvas.vline(192 + 1, 0, 64);
+    canvas.vline(192 + 2, 0, 64);
 
     for (int trackIndex = 0; trackIndex < 8; trackIndex++) {
         const auto &track = _project.track(trackIndex);
@@ -132,10 +132,6 @@ void OverviewPage::draw(Canvas &canvas) {
         canvas.setColor(0x7);
 
         int y = 5 + trackIndex * 8;
-
-        if (!_drawOverview) {
-            return;
-        }
 
         // track number / pattern number
         canvas.setColor(trackState.mute() ? 0x7 : 0xf);
