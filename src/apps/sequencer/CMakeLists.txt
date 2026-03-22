@@ -27,6 +27,8 @@ set(sources
     stars/Stars.cpp
     # fire
     fire/Fire.cpp
+    # life
+    life/Life.cpp
     # model
     model/Arpeggiator.cpp
     model/Calibration.cpp
@@ -78,6 +80,7 @@ set(sources
     ui/pages/CurveSequencePage.cpp
     ui/pages/FileSelectPage.cpp
     ui/pages/FirePage.cpp
+    ui/pages/LifePage.cpp
     ui/pages/GeneratorPage.cpp
     ui/pages/GeneratorSelectPage.cpp
     ui/pages/IntroPage.cpp

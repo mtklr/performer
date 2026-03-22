@@ -241,6 +241,15 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
     }
 #endif
 
+#ifdef CONFIG_ENABLE_LIFE
+    if (key.is(Key::F3)) {
+        if (key.shiftModifier()) {
+            _manager.pages().life.show();
+        }
+        event.consume();
+    }
+#endif
+
     if (key.is(Key::F4)) {
         if (key.shiftModifier()) {
             _drawOverview = !_drawOverview;

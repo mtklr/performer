@@ -43,6 +43,9 @@
 #ifdef CONFIG_ENABLE_FIRE
 #include "FirePage.h"
 #endif
+#ifdef CONFIG_ENABLE_LIFE
+#include "LifePage.h"
+#endif
 
 struct Pages {
     TopPage top;
@@ -90,6 +93,9 @@ struct Pages {
 #ifdef CONFIG_ENABLE_FIRE
     FirePage fire;
 #endif
+#ifdef CONFIG_ENABLE_LIFE
+    LifePage life;
+#endif
 
     Pages(PageManager &manager, PageContext &context) :
         top(manager, context),
@@ -136,6 +142,9 @@ struct Pages {
 #endif
 #ifdef CONFIG_ENABLE_FIRE
         ,fire(manager, context)
+#endif
+#ifdef CONFIG_ENABLE_LIFE
+        ,life(manager, context)
 #endif
     {}
 };
