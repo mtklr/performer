@@ -250,6 +250,15 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
     }
 #endif
 
+#ifdef CONFIG_ENABLE_BOUNCE
+    if (key.is(Key::F4)) {
+        if (!key.shiftModifier() && globalKeyState()[Key::Page]) {
+            _manager.pages().bounce.show();
+        }
+        event.consume();
+    }
+#endif
+
     if (key.is(Key::F4)) {
         if (key.shiftModifier()) {
             _drawOverview = !_drawOverview;

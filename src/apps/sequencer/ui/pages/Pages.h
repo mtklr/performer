@@ -46,6 +46,9 @@
 #ifdef CONFIG_ENABLE_LIFE
 #include "LifePage.h"
 #endif
+#ifdef CONFIG_ENABLE_BOUNCE
+#include "BouncePage.h"
+#endif
 
 struct Pages {
     TopPage top;
@@ -96,6 +99,9 @@ struct Pages {
 #ifdef CONFIG_ENABLE_LIFE
     LifePage life;
 #endif
+#ifdef CONFIG_ENABLE_BOUNCE
+    BouncePage bounce;
+#endif
 
     Pages(PageManager &manager, PageContext &context) :
         top(manager, context),
@@ -145,6 +151,9 @@ struct Pages {
 #endif
 #ifdef CONFIG_ENABLE_LIFE
         ,life(manager, context)
+#endif
+#ifdef CONFIG_ENABLE_BOUNCE
+        ,bounce(manager, context)
 #endif
     {}
 };
