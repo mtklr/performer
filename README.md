@@ -1,3 +1,42 @@
+## dev branch changes
+
+### "screensavers"
+
+Bouncing notes, life, fire, starfield, intro, blank, all from the Overview page with <kbd>Shift</kbd> or <kbd>Page</kbd> + <kbd>F1</kbd>-<kbd>F5</kbd>...
+
+* The blank option is a nice way to (effectively) turn the screen off, while the sequence keeps running.
+
+### display current
+
+Lowered display current values to make the screen a bit less bright (and potentially less noisy). See [DISPLAYMODS.md](https://github.com/mtklr/performer/blob/dev/DISPLAYMODS.md) for more info.
+
+### overview page tweaks
+
+Minor cosmetic changes.
+
+<kbd>F5</kbd> toggles step/page count info.
+
+### clear selection / toggle last selected
+
+<kbd>Shift</kbd>+Encoder toggles between clearing the selection and the last selection.
+
+### F5 in menu = Encoder press
+
+Use <kbd>F5</kbd> to select menu items.
+
+The encoder and <kbd>Prev</kbd>/<kbd>Next</kbd> move through menus, but the only way to select menu items was with the encoder.
+
+### miscellaneous
+
+Various build system changes to get things working on my system.
+
+### disclaimer
+
+* This dev branch gets rebased and force-pushed fairly often.
+* IANAP, most of these changes are based on the work of others, to whom I've given credit in the respective files...
+
+---
+
 ![Build Status](https://github.com/westlicht/performer/actions/workflows/ci.yml/badge.svg?branch=master)
 
 # PER|FORMER
