@@ -49,6 +49,9 @@
 #ifdef CONFIG_ENABLE_BOUNCE
 #include "BouncePage.h"
 #endif
+#ifdef CONFIG_ENABLE_WORMS
+#include "WormsPage.h"
+#endif
 
 struct Pages {
     TopPage top;
@@ -102,6 +105,9 @@ struct Pages {
 #ifdef CONFIG_ENABLE_BOUNCE
     BouncePage bounce;
 #endif
+#ifdef CONFIG_ENABLE_WORMS
+    WormsPage worms;
+#endif
 
     Pages(PageManager &manager, PageContext &context) :
         top(manager, context),
@@ -154,6 +160,9 @@ struct Pages {
 #endif
 #ifdef CONFIG_ENABLE_BOUNCE
         ,bounce(manager, context)
+#endif
+#ifdef CONFIG_ENABLE_WORMS
+        ,worms(manager, context)
 #endif
     {}
 };

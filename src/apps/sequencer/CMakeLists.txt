@@ -31,6 +31,8 @@ set(sources
     life/Life.cpp
     # bounce
     bounce/Bounce.cpp
+    # worms
+    worms/Worms.cpp
     # model
     model/Arpeggiator.cpp
     model/Calibration.cpp
@@ -84,6 +86,7 @@ set(sources
     ui/pages/FirePage.cpp
     ui/pages/LifePage.cpp
     ui/pages/BouncePage.cpp
+    ui/pages/WormsPage.cpp
     ui/pages/GeneratorPage.cpp
     ui/pages/GeneratorSelectPage.cpp
     ui/pages/IntroPage.cpp
