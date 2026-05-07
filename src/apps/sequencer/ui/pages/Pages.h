@@ -52,6 +52,9 @@
 #ifdef CONFIG_ENABLE_WORMS
 #include "WormsPage.h"
 #endif
+#ifdef CONFIG_ENABLE_SNOW
+#include "SnowPage.h"
+#endif
 
 struct Pages {
     TopPage top;
@@ -108,6 +111,9 @@ struct Pages {
 #ifdef CONFIG_ENABLE_WORMS
     WormsPage worms;
 #endif
+#ifdef CONFIG_ENABLE_SNOW
+    SnowPage snow;
+#endif
 
     Pages(PageManager &manager, PageContext &context) :
         top(manager, context),
@@ -163,6 +169,9 @@ struct Pages {
 #endif
 #ifdef CONFIG_ENABLE_WORMS
         ,worms(manager, context)
+#endif
+#ifdef CONFIG_ENABLE_SNOW
+        ,snow(manager, context)
 #endif
     {}
 };

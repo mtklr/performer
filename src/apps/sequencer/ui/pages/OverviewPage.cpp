@@ -268,6 +268,15 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
     }
 #endif
 
+#ifdef CONFIG_ENABLE_SNOW
+    if (key.is(Key::F2)) {
+        if (!key.shiftModifier() && globalKeyState()[Key::Page]) {
+            _manager.pages().snow.show();
+        }
+        event.consume();
+    }
+#endif
+
     if (key.is(Key::F4)) {
         if (key.shiftModifier()) {
             _drawOverview = !_drawOverview;
