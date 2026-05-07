@@ -6,6 +6,8 @@ Bouncing notes, life, fire, starfield, intro, blank, all from the Overview page 
 
 * The blank option is a nice way to (effectively) turn the screen off, while the sequence keeps running.
 
+* Space may be tight when building the actual firmware (not the simulator) by including these (I've had errors during compilation to this effect). If this happens, disable one or more of them and try again.
+
 ### display current
 
 Lowered display current values to make the screen a bit less bright (and potentially less noisy). See [DISPLAYMODS.md](https://github.com/mtklr/performer/blob/dev/DISPLAYMODS.md) for more info.
