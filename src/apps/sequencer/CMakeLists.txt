@@ -23,15 +23,11 @@ set(sources
     engine/generators/Rhythm.cpp
     # intro
     intro/Intro.cpp
-    # starfield
+    # screensavers
     stars/Stars.cpp
-    # fire
     fire/Fire.cpp
-    # life
     life/Life.cpp
-    # bounce
     bounce/Bounce.cpp
-    # worms
     worms/Worms.cpp
     # model
     model/Arpeggiator.cpp
@@ -83,13 +79,17 @@ set(sources
     ui/pages/CurveSequenceEditPage.cpp
     ui/pages/CurveSequencePage.cpp
     ui/pages/FileSelectPage.cpp
+    ui/pages/GeneratorPage.cpp
+    ui/pages/GeneratorSelectPage.cpp
+    # intro
+    ui/pages/IntroPage.cpp
+    # screensavers
+    ui/pages/StarsPage.cpp
     ui/pages/FirePage.cpp
     ui/pages/LifePage.cpp
     ui/pages/BouncePage.cpp
     ui/pages/WormsPage.cpp
-    ui/pages/GeneratorPage.cpp
-    ui/pages/GeneratorSelectPage.cpp
-    ui/pages/IntroPage.cpp
+    #
     ui/pages/LayoutPage.cpp
     ui/pages/ListPage.cpp
     ui/pages/MidiOutputPage.cpp
@@ -104,7 +104,6 @@ set(sources
     ui/pages/RoutingPage.cpp
     ui/pages/SongPage.cpp
     ui/pages/StartupPage.cpp
-    ui/pages/StarsPage.cpp
     ui/pages/SystemPage.cpp
     ui/pages/TempoPage.cpp
     ui/pages/TextInputPage.cpp
