@@ -30,6 +30,7 @@ set(sources
     bounce/Bounce.cpp
     worms/Worms.cpp
     snow/Snow.cpp
+    fish/Fish.cpp
     # model
     model/Arpeggiator.cpp
     model/Calibration.cpp
@@ -91,6 +92,7 @@ set(sources
     ui/pages/BouncePage.cpp
     ui/pages/WormsPage.cpp
     ui/pages/SnowPage.cpp
+    ui/pages/FishPage.cpp
     #
     ui/pages/LayoutPage.cpp
     ui/pages/ListPage.cpp

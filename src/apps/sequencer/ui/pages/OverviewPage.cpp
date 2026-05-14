@@ -277,6 +277,15 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
     }
 #endif
 
+#ifdef CONFIG_ENABLE_FISH
+    if (key.is(Key::F1)) {
+        if (!key.shiftModifier() && globalKeyState()[Key::Page]) {
+            _manager.pages().fish.show();
+        }
+        event.consume();
+    }
+#endif
+
     if (key.is(Key::F4)) {
         if (key.shiftModifier()) {
             _drawOverview = !_drawOverview;

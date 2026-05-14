@@ -55,6 +55,9 @@
 #ifdef CONFIG_ENABLE_SNOW
 #include "SnowPage.h"
 #endif
+#ifdef CONFIG_ENABLE_FISH
+#include "FishPage.h"
+#endif
 
 struct Pages {
     TopPage top;
@@ -114,6 +117,9 @@ struct Pages {
 #ifdef CONFIG_ENABLE_SNOW
     SnowPage snow;
 #endif
+#ifdef CONFIG_ENABLE_FISH
+    FishPage fish;
+#endif
 
     Pages(PageManager &manager, PageContext &context) :
         top(manager, context),
@@ -172,6 +178,9 @@ struct Pages {
 #endif
 #ifdef CONFIG_ENABLE_SNOW
         ,snow(manager, context)
+#endif
+#ifdef CONFIG_ENABLE_FISH
+        ,fish(manager, context)
 #endif
     {}
 };
