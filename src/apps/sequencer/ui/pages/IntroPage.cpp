@@ -19,7 +19,7 @@ void IntroPage::draw(Canvas &canvas) {
     float dt = float(currentTicks - _lastTicks) / os::time::ms(1000);
     _lastTicks = currentTicks;
 
-    _intro.update(dt);
+    _intro.update(dt, _engine.gateOutput());
     _intro.draw(canvas);
 }
 
