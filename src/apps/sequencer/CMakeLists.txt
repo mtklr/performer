@@ -31,6 +31,9 @@ set(sources
     worms/Worms.cpp
     snow/Snow.cpp
     fish/Fish.cpp
+    vu/Vu.cpp
+    vubar/VuBar.cpp
+    vuline/VuLine.cpp
     # model
     model/Arpeggiator.cpp
     model/Calibration.cpp
@@ -93,6 +96,9 @@ set(sources
     ui/pages/WormsPage.cpp
     ui/pages/SnowPage.cpp
     ui/pages/FishPage.cpp
+    ui/pages/VuPage.cpp
+    ui/pages/VuBarPage.cpp
+    ui/pages/VuLinePage.cpp
     #
     ui/pages/LayoutPage.cpp
     ui/pages/ListPage.cpp

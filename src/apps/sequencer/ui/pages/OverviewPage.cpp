@@ -286,6 +286,33 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
     }
 #endif
 
+#ifdef CONFIG_ENABLE_VU
+    if (key.is(Key::F0)) {
+        if (!key.shiftModifier() && !globalKeyState()[Key::Page]) {
+            _manager.pages().vu.show();
+        }
+        event.consume();
+    }
+#endif
+
+#ifdef CONFIG_ENABLE_VUBAR
+    if (key.is(Key::F1)) {
+        if (!key.shiftModifier() && !globalKeyState()[Key::Page]) {
+            _manager.pages().vuBar.show();
+        }
+        event.consume();
+    }
+#endif
+
+#ifdef CONFIG_ENABLE_VULINE
+    if (key.is(Key::F2)) {
+        if (!key.shiftModifier() && !globalKeyState()[Key::Page]) {
+            _manager.pages().vuLine.show();
+        }
+        event.consume();
+    }
+#endif
+
     if (key.is(Key::F4)) {
         if (key.shiftModifier()) {
             _drawOverview = !_drawOverview;

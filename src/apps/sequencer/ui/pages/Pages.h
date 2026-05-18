@@ -58,6 +58,15 @@
 #ifdef CONFIG_ENABLE_FISH
 #include "FishPage.h"
 #endif
+#ifdef CONFIG_ENABLE_VU
+#include "VuPage.h"
+#endif
+#ifdef CONFIG_ENABLE_VUBAR
+#include "VuBarPage.h"
+#endif
+#ifdef CONFIG_ENABLE_VULINE
+#include "VuLinePage.h"
+#endif
 
 struct Pages {
     TopPage top;
@@ -120,6 +129,15 @@ struct Pages {
 #ifdef CONFIG_ENABLE_FISH
     FishPage fish;
 #endif
+#ifdef CONFIG_ENABLE_VU
+    VuPage vu;
+#endif
+#ifdef CONFIG_ENABLE_VUBAR
+    VuBarPage vuBar;
+#endif
+#ifdef CONFIG_ENABLE_VULINE
+    VuLinePage vuLine;
+#endif
 
     Pages(PageManager &manager, PageContext &context) :
         top(manager, context),
@@ -181,6 +199,15 @@ struct Pages {
 #endif
 #ifdef CONFIG_ENABLE_FISH
         ,fish(manager, context)
+#endif
+#ifdef CONFIG_ENABLE_VU
+        ,vu(manager, context)
+#endif
+#ifdef CONFIG_ENABLE_VUBAR
+        ,vuBar(manager, context)
+#endif
+#ifdef CONFIG_ENABLE_VULINE
+        ,vuLine(manager, context)
 #endif
     {}
 };
