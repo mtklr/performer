@@ -313,11 +313,16 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
     }
 #endif
 
-    if (key.is(Key::F4)) {
-        if (key.shiftModifier()) {
-            _drawOverview = !_drawOverview;
-        } else {
+    if (key.is(Key::F3)) {
+        if (!key.shiftModifier() && !globalKeyState()[Key::Page]) {
             _drawPageStepCount = !_drawPageStepCount;
+        }
+        event.consume();
+    }
+
+    if (key.is(Key::F4)) {
+        if (!key.shiftModifier() && !globalKeyState()[Key::Page]) {
+            _drawOverview = !_drawOverview;
         }
         event.consume();
     }
