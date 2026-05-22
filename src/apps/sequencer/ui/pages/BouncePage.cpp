@@ -52,7 +52,7 @@ void BouncePage::keyPress(KeyPressEvent &event) {
         return;
     }
 
-    if (key.is(Key::F4)) {
+    if (key.is(Key::F0)) {
         if (!key.shiftModifier() && globalKeyState()[Key::Page]) {
             BasePage::close();
             return;

@@ -52,7 +52,7 @@ void FishPage::keyPress(KeyPressEvent &event) {
         return;
     }
 
-    if (key.is(Key::F1)) {
+    if (key.is(Key::F3)) {
         if (!key.shiftModifier() && globalKeyState()[Key::Page]) {
             BasePage::close();
             return;
