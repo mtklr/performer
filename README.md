@@ -2,11 +2,37 @@
 
 ### "screensavers"
 
-Bouncing notes, life, fire, starfield, intro, blank, all from the Overview page with <kbd>Shift</kbd> or <kbd>Page</kbd> + <kbd>F1</kbd>-<kbd>F5</kbd>...
+From the Overview page, these are accessed via <kbd>F1</kbd> - <kbd>F5</kbd> and (opt.) <kbd>Shift</kbd> or <kbd>Page</kbd>.
 
-* The blank option is a nice way to (effectively) turn the screen off, while the sequence keeps running.
+* Space is tight when building the actual firmware (not the simulator) when including these. If stm32 compilation fails because the firmware is too big, disable one or more in `src/apps/sequencer/Config.h` ("fire" and "snow" use a framebuffer, they're the largest) and try again.
 
-* Space may be tight when building the actual firmware (not the simulator) by including these (I've had errors during compilation to this effect). If this happens, disable one or more of them and try again.
+<!--
+<kbd>F1</kbd> - vu 3d
+<br>
+<kbd>F2</kbd> - vu bars
+<br>
+<kbd>F3</kbd> - vu line
+<br>
+<kbd>F4</kbd> - toggle page/step count
+<br>
+<kbd>F5</kbd> - blank
+
+<kbd>Shift</kbd> + <kbd>F1</kbd> - intro
+<br>
+<kbd>Shift</kbd> + <kbd>F2</kbd> - stars
+<br>
+<kbd>Shift</kbd> + <kbd>F3</kbd> - fire
+<br>
+<kbd>Shift</kbd> + <kbd>F4</kbd> - life
+
+<kbd>Page</kbd> + <kbd>F1</kbd> - bounce
+<br>
+<kbd>Page</kbd> + <kbd>F2</kbd> - worms
+<br>
+<kbd>Page</kbd> + <kbd>F3</kbd> - snow
+<br>
+<kbd>Page</kbd> + <kbd>F4</kbd> - fish
+-->
 
 ### display current
 
