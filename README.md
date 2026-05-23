@@ -4,7 +4,7 @@
 
 From the Overview page, these are accessed via <kbd>F1</kbd> - <kbd>F5</kbd> and (opt.) <kbd>Shift</kbd> or <kbd>Page</kbd>.
 
-* Space is tight when building the actual firmware (not the simulator) when including these. If stm32 compilation fails because the firmware is too big, disable one or more in `src/apps/sequencer/Config.h` ("fire" and "snow" use a framebuffer, they're the largest) and try again.
+* Space is tight when building the actual firmware (not the simulator) when including these. If stm32 compilation fails because the firmware is too big, disable one or more in `src/apps/sequencer/Config.h` ("fire," "snow," and "plasma" use a framebuffer; they're the largest) and try again.
 
 <!--
 <kbd>F1</kbd> - vu 3d
@@ -24,6 +24,8 @@ From the Overview page, these are accessed via <kbd>F1</kbd> - <kbd>F5</kbd> and
 <kbd>Shift</kbd> + <kbd>F3</kbd> - fire
 <br>
 <kbd>Shift</kbd> + <kbd>F4</kbd> - life
+<br>
+<kbd>Shift</kbd> + <kbd>F5</kbd> - plasma
 
 <kbd>Page</kbd> + <kbd>F1</kbd> - bounce
 <br>
@@ -52,7 +54,7 @@ Minor cosmetic changes.
 
 Use <kbd>F5</kbd> to select menu items.
 
-The encoder and <kbd>Prev</kbd>/<kbd>Next</kbd> move through menus, but the only way to select menu items was with the encoder.
+The encoder and <kbd>Prev</kbd> / <kbd>Next</kbd> move through menus, but the only way to select menu items was with the encoder.
 
 ### miscellaneous
 

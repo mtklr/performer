@@ -46,6 +46,9 @@
 #ifdef CONFIG_ENABLE_LIFE
 #include "LifePage.h"
 #endif
+#ifdef CONFIG_ENABLE_PLASMA
+#include "PlasmaPage.h"
+#endif
 #ifdef CONFIG_ENABLE_BOUNCE
 #include "BouncePage.h"
 #endif
@@ -117,6 +120,9 @@ struct Pages {
 #ifdef CONFIG_ENABLE_LIFE
     LifePage life;
 #endif
+#ifdef CONFIG_ENABLE_PLASMA
+    PlasmaPage plasma;
+#endif
 #ifdef CONFIG_ENABLE_BOUNCE
     BouncePage bounce;
 #endif
@@ -187,6 +193,9 @@ struct Pages {
 #endif
 #ifdef CONFIG_ENABLE_LIFE
         ,life(manager, context)
+#endif
+#ifdef CONFIG_ENABLE_PLASMA
+        ,plasma(manager, context)
 #endif
 #ifdef CONFIG_ENABLE_BOUNCE
         ,bounce(manager, context)

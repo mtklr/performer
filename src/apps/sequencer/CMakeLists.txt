@@ -27,6 +27,7 @@ set(sources
     stars/Stars.cpp
     fire/Fire.cpp
     life/Life.cpp
+    plasma/Plasma.cpp
     bounce/Bounce.cpp
     worms/Worms.cpp
     snow/Snow.cpp
@@ -92,6 +93,7 @@ set(sources
     ui/pages/StarsPage.cpp
     ui/pages/FirePage.cpp
     ui/pages/LifePage.cpp
+    ui/pages/PlasmaPage.cpp
     ui/pages/BouncePage.cpp
     ui/pages/WormsPage.cpp
     ui/pages/SnowPage.cpp

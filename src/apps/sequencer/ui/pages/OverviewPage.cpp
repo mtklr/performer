@@ -250,6 +250,15 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
     }
 #endif
 
+#ifdef CONFIG_ENABLE_PLASMA
+    if (key.is(Key::F4)) {
+        if (key.shiftModifier()) {
+            _manager.pages().plasma.show();
+        }
+        event.consume();
+    }
+#endif
+
 #ifdef CONFIG_ENABLE_BOUNCE
     if (key.is(Key::F0)) {
         if (!key.shiftModifier() && globalKeyState()[Key::Page]) {
