@@ -13,6 +13,7 @@ void PlasmaPage::enter() {
 }
 
 void PlasmaPage::exit() {
+    _plasma.cleanup();
 }
 
 void PlasmaPage::draw(Canvas &canvas) {

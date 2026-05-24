@@ -8,7 +8,7 @@
 
 #include <ctime>
 
-uint8_t buffer[CONFIG_LCD_WIDTH * CONFIG_LCD_HEIGHT];
+uint8_t *plasma_fb;
 
 static float dist(int a, int b, int c, int d) {
     return sqrt((a - c) * (a - c) + (b - d) * (b - d));
@@ -21,6 +21,22 @@ void Plasma::init() {
     _time = 0.f;
 
     srand(time(NULL));
+
+    plasma_fb = (uint8_t *) std::calloc(CONFIG_LCD_WIDTH * CONFIG_LCD_HEIGHT, sizeof(uint8_t));
+
+    if (plasma_fb == NULL) {
+        // fprintf(stderr,"error: calloc plasma_fb\n");
+        return;
+    }
+
+}
+
+void Plasma::cleanup() {
+    if (plasma_fb) {
+        std::free(plasma_fb);
+        plasma_fb = NULL;
+        // fprintf(stderr, "freed plasma_fb\n");
+    }
 }
 
 void Plasma::update(float dt) {
@@ -45,12 +61,9 @@ void Plasma::draw(Canvas &canvas) {
 
             int id = y * CONFIG_LCD_WIDTH + x;
 
-            buffer[id] = color;
-            buffer[id + 1] = color * 2;
-            buffer[id + 2] = 15 - color;
-            buffer[id + 3] = 15;
+            plasma_fb[id] = color;
 
-            canvas.setColor(buffer[id]);
+            canvas.setColor(plasma_fb[id]);
             canvas.point(x, y);
         }
     }

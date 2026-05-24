@@ -10,6 +10,7 @@ public:
 
     void update(float dt);
     void draw(Canvas &canvas);
+    void cleanup();
 
 private:
     float _time;
