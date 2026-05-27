@@ -36,15 +36,13 @@ From the Overview page, these are accessed via <kbd>F1</kbd> - <kbd>F5</kbd> and
 <kbd>Page</kbd> + <kbd>F4</kbd> - fish
 -->
 
-### display current
-
-Lowered display current values to make the screen a bit less bright (and potentially less noisy). See [DISPLAYMODS.md](https://github.com/mtklr/performer/blob/dev/DISPLAYMODS.md) for more info.
-
 ### overview page tweaks
 
 Minor cosmetic changes.
 
-<kbd>F5</kbd> toggles step/page count info.
+<kbd>F4</kbd> toggles step/page count info.
+
+<kbd>F5</kbd> blanks the display.
 
 ### clear selection / toggle last selected
 
@@ -55,6 +53,10 @@ Minor cosmetic changes.
 Use <kbd>F5</kbd> to select menu items.
 
 The encoder and <kbd>Prev</kbd> / <kbd>Next</kbd> move through menus, but the only way to select menu items was with the encoder.
+
+### display current
+
+Lowered display current values to make the screen a bit less bright (and potentially less noisy). See [DISPLAYMODS.md](https://github.com/mtklr/performer/blob/dev/DISPLAYMODS.md) for more info.
 
 ### miscellaneous
 
