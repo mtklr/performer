@@ -13,7 +13,6 @@ void PlasmaPage::enter() {
 }
 
 void PlasmaPage::exit() {
-    _plasma.cleanup();
 }
 
 void PlasmaPage::draw(Canvas &canvas) {
@@ -53,8 +52,8 @@ void PlasmaPage::keyPress(KeyPressEvent &event) {
         return;
     }
 
-    if (key.is(Key::F0)) {
-        if (!key.shiftModifier() && globalKeyState()[Key::Page]) {
+    if (key.is(Key::F4)) {
+        if (key.shiftModifier()) {
             BasePage::close();
             return;
         }
