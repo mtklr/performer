@@ -4,7 +4,7 @@
 
 From the Overview page, these are accessed via <kbd>F1</kbd> - <kbd>F5</kbd> and (opt.) <kbd>Shift</kbd> or <kbd>Page</kbd>.
 
-* Space is tight when building the actual firmware (not the simulator) when including these. If stm32 compilation fails because the firmware is too big, disable one or more in `src/apps/sequencer/Config.h` ("fire," "snow," and "plasma" use a framebuffer; they're the largest) and try again.
+* Space is tight when building the actual firmware (not the simulator) and including these. If stm32 compilation fails because the firmware is too big, disable one or more in `src/apps/sequencer/Config.h` ("fire," "snow," and "plasma" use a framebuffer; they're the largest) and try again.
 
 <!--
 <kbd>F1</kbd> - vu 3d
