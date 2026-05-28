@@ -38,11 +38,7 @@ static const uint8_t flake_colors[7] = { 0x3, 0x5, 0x7, 0x9, 0xa, 0xc, 0xf };
 Snowfall *snow;
 float wind;
 
-// all-screensavers-enabled (sometimes) fails on stm32,
-// prob because of bg[] and fire px[], too big for firmware...
-// can use calloc for these and it works but not sure that's ok?
-// uint8_t *bg; // calloc
-static uint8_t bg[CONFIG_LCD_WIDTH * CONFIG_LCD_HEIGHT];
+static uint8_t snow_fb[CONFIG_LCD_WIDTH * CONFIG_LCD_HEIGHT];
 
 static void flake_init(Snowflake *flake, const int width) {
     flake->size = rand() % 2 + 1; // 1..2
@@ -93,13 +89,13 @@ static int flake_blocked(Snowflake * flake, int x) {
 
     for (int fs = 1; fs <= flake->size; fs++) {
         // below not blank
-        if (bg[(y + 1) * CONFIG_LCD_WIDTH + x] != 0) {
+        if (snow_fb[(y + 1) * CONFIG_LCD_WIDTH + x] != 0) {
             int dir = rand() % 2 * -2 + 1; // -1 or 1
 
-            if (bg[(y + fs) * CONFIG_LCD_WIDTH + (x + dir)] == 0) {
+            if (snow_fb[(y + fs) * CONFIG_LCD_WIDTH + (x + dir)] == 0) {
                 flake->x += dir;
                 return 0;
-            } else if (bg[(y + fs) * CONFIG_LCD_WIDTH + (x - dir)] == 0) {
+            } else if (snow_fb[(y + fs) * CONFIG_LCD_WIDTH + (x - dir)] == 0) {
                 flake->x -= dir;
                 return 0;
             } else {
@@ -117,7 +113,7 @@ static void melt_flakes() {
             int index = y * CONFIG_LCD_WIDTH + x;
 
             // "drop" snow pile down 1 row
-            bg[index] = bg[(y - 1) * CONFIG_LCD_WIDTH + x];
+            snow_fb[index] = snow_fb[(y - 1) * CONFIG_LCD_WIDTH + x];
         }
     }
 }
@@ -132,9 +128,6 @@ void Snow::init() {
 
     srand(time(NULL));
 
-    // use calloc bg instead of static uint8_t above?
-    // bg = (uint8_t *) std::calloc(CONFIG_LCD_WIDTH * CONFIG_LCD_HEIGHT, sizeof(uint8_t));
-
     wind = 0.1f * (rand() % 2 + 1);
 
     if (rand() % 2 == 0) {
@@ -142,7 +135,7 @@ void Snow::init() {
     };
 
     for (int i = 0; i < CONFIG_LCD_WIDTH * CONFIG_LCD_HEIGHT; i++) {
-        bg[i] = 0;
+        snow_fb[i] = 0;
     }
 
     snow = snow_start(INTENSITY, CONFIG_LCD_WIDTH);
@@ -196,7 +189,7 @@ void Snow::draw(Canvas &canvas) {
             if (flake->color > 0x5) { // skip darker flakes
                 for (int fx = 0; fx < flake->size; fx++) {
                     for (int fy = 0; fy < flake->size; fy++) {
-                        bg[(int) (flake->y + fy) * CONFIG_LCD_WIDTH + (x + fx)] = rand() % 8 < 6 ? 0xf : 0xc;
+                        snow_fb[(int) (flake->y + fy) * CONFIG_LCD_WIDTH + (x + fx)] = rand() % 8 < 6 ? 0xf : 0xc;
                     }
                 }
             }
@@ -213,13 +206,13 @@ void Snow::draw(Canvas &canvas) {
         }
     }
 
-    // draw bg
+    // draw snow_fb
     for (int x = 0; x < CONFIG_LCD_WIDTH; x++) {
         for (int y = 0; y < CONFIG_LCD_HEIGHT; y++) {
-            if (bg[y * CONFIG_LCD_WIDTH + x] == 0) {
+            if (snow_fb[y * CONFIG_LCD_WIDTH + x] == 0) {
                 continue;
             }
-            canvas.setColor(bg[y * CONFIG_LCD_WIDTH + x]);
+            canvas.setColor(snow_fb[y * CONFIG_LCD_WIDTH + x]);
             canvas.point(x, y);
         }
     }

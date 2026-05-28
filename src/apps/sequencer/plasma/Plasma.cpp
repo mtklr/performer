@@ -6,9 +6,7 @@
 
 #include "os/os.h"
 
-#include <ctime>
-
-uint8_t buffer[CONFIG_LCD_WIDTH * CONFIG_LCD_HEIGHT];
+uint8_t plasma_fb[CONFIG_LCD_WIDTH * CONFIG_LCD_HEIGHT];
 
 static float dist(int a, int b, int c, int d) {
     return sqrt((a - c) * (a - c) + (b - d) * (b - d));
@@ -19,8 +17,6 @@ Plasma::Plasma() {
 
 void Plasma::init() {
     _time = 0.f;
-
-    srand(time(NULL));
 }
 
 void Plasma::update(float dt) {
@@ -32,7 +28,7 @@ void Plasma::draw(Canvas &canvas) {
     canvas.setColor(0);
     canvas.fill();
 
-    int plasma_time = floor(os::ticks() / 50);
+    int plasma_time = os::ticks() / 50;
 
     for (int y = 0; y < CONFIG_LCD_HEIGHT; y++) {
         for (int x = 0; x < CONFIG_LCD_WIDTH; x++) {
@@ -41,16 +37,16 @@ void Plasma::draw(Canvas &canvas) {
                 sin(dist(x, y + plasma_time / 7, 192, 64) / 7) +
                 sin(dist(x, y, 192, 100) / 8);
 
-            int color = (int) ((4 + value) * 2) % 16; // floor()
+            int color = ((4 + (int) value) * 2) % 16;
 
             int id = y * CONFIG_LCD_WIDTH + x;
 
-            buffer[id] = color;
-            buffer[id + 1] = color * 2;
-            buffer[id + 2] = 15 - color;
-            buffer[id + 3] = 15;
+            plasma_fb[id] = color;
+            // plasma_fb[id + 1] = color * 2;
+            // plasma_fb[id + 2] = 15 - color;
+            // plasma_fb[id + 3] = 15;
 
-            canvas.setColor(buffer[id]);
+            canvas.setColor(plasma_fb[id]);
             canvas.point(x, y);
         }
     }
