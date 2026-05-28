@@ -13,7 +13,6 @@ void FirePage::enter() {
 }
 
 void FirePage::exit() {
-    _fire.cleanup();
 }
 
 void FirePage::draw(Canvas &canvas) {
