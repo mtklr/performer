@@ -96,7 +96,7 @@ typedef struct _STATE {
     /* unsigned long long steal[MAX_WORMS]; */
     /* unsigned long long guest[MAX_WORMS]; */
     /* unsigned long long guest_nice[MAX_WORMS]; */
-    WORM *worms;
+    WORM worms[8];
 } STATE;
 
 class Worms {
@@ -111,7 +111,6 @@ public:
     void clear_worm(Canvas &canvas, STATE *st, WORM *s);
     void draw_worm(Canvas &canvas, STATE *st, WORM *s);
     void run_worms(Canvas &canvas);
-    void cleanup();
 
 private:
     float _time;

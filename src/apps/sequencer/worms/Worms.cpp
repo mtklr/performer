@@ -361,13 +361,6 @@ void Worms::init() {
 //     st->delay = MAX_MICROSEC / st->divisor;
 // #endif
 
-    st->worms = (WORM *) std::calloc(st->cpus, sizeof(WORM));
-
-    if (st->worms == NULL) {
-        // fprintf(stderr,"error: calloc st->worms\n");
-        return;
-    }
-
     for (n = 0; n < st->cpus; n++) {
         WORM *s = (WORM *)&st->worms[n];
 
@@ -409,16 +402,6 @@ void Worms::init() {
     // clear_ncurses();
     // setpriority(PRIO_PROCESS, 0, prio);
     // return 0;
-}
-
-void Worms::cleanup() {
-    if (state.worms) {
-        std::free(state.worms);
-        state.worms = NULL;
-
-        // fprintf(stderr, "freed state.worms\n");
-    }
-
 }
 
 void Worms::update(float dt) {

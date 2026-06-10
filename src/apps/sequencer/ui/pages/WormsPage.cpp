@@ -13,7 +13,6 @@ void WormsPage::enter() {
 }
 
 void WormsPage::exit() {
-    _worms.cleanup();
 }
 
 void WormsPage::draw(Canvas &canvas) {
