@@ -4,6 +4,8 @@
 #include "core/math/Vec3.h"
 #include "core/math/Mat4.h"
 
+#define PULSE_CUBES
+
 const Vec3 boxVertices[] = {
     { -1.f, -1.f, -1.f },
     { -1.f, -1.f,  1.f },
@@ -43,12 +45,16 @@ Intro::Intro() {
 
 void Intro::init() {
     _time = 0.f;
+#ifdef PULSE_CUBES
     _pulse_state = 0;
+#endif
 }
 
 void Intro::update(float dt, uint8_t gates) {
     _time += dt;
+#ifdef PULSE_CUBES
     _pulse_state = gates;
+#endif
 }
 
 void Intro::draw(Canvas &canvas) {
@@ -70,8 +76,12 @@ void Intro::draw(Canvas &canvas) {
     canvas.setColor(0xa);
 
     for (int instance = -3; instance <= 4; ++instance) {
+#ifdef PULSE_CUBES
         bool pulse = (_pulse_state >> (4 - instance)) & 1;
         Mat4 modelMatrix = Mat4::translate(Vec3(instance * 6.f, pulse ? -2.5f : -3.f, pulse ? -0.5f : 0.f)) * Mat4::rotXYZ(Vec3((_time + instance) * 0.3, (_time + instance) * 0.7, (_time + instance) * 1.3));
+#else
+        Mat4 modelMatrix = Mat4::translate(Vec3(instance * 6.f, -3.f, 0.f)) * Mat4::rotXYZ(Vec3((_time + instance) * 0.3, (_time + instance) * 0.7, (_time + instance) * 1.3));
+#endif
 
         Mat4 modelViewProjMatrix = projMatrix * viewMatrix * modelMatrix;
 
