@@ -230,12 +230,12 @@ void Worms::draw_worm(Canvas &canvas, STATE *st, WORM *s) {
 }
 
 void Worms::run_worms(Canvas &canvas) { //, STATE *st)
-    float range, increment;
+    // float range, increment;
     int n;
 
     STATE *st = &state;
     // reset columns and lines in case the screen was resized
-    worm_max_length = AREA_BASE_LEN + AREA_EXT_LEN;
+    // worm_max_length = AREA_BASE_LEN + AREA_EXT_LEN;
 
     if (worm_max_length > WORM_MAX_LEN) {
         worm_max_length = WORM_MAX_LEN;
@@ -247,7 +247,6 @@ void Worms::run_worms(Canvas &canvas) { //, STATE *st)
     for (n = 0; n < st->cpus; n++) {
         WORM *s = (WORM *) &st->worms[n];
 
-        // this loop makes everything slower
         if (++s->count >= s->limit) {
             s->count = 0;
             // grow_worm(st, s);
@@ -280,15 +279,15 @@ void Worms::run_worms(Canvas &canvas) { //, STATE *st)
 //        st->delay = MIN_NANOSEC;
 //     st->delay /= st->divisor;
 // #else
-    range = MAX_MICROSEC - MIN_MICROSEC;
-    increment = range / MAX_LOADAVG;
-    st->delay = MAX_MICROSEC - (n * increment);
+    // range = MAX_MICROSEC - MIN_MICROSEC;
+    // increment = range / MAX_LOADAVG;
+    // st->delay = MAX_MICROSEC - (n * increment);
 
-    if (st->delay < MIN_MICROSEC) {
-        st->delay = MIN_MICROSEC;
-    }
+    // if (st->delay < MIN_MICROSEC) {
+    //     st->delay = MIN_MICROSEC;
+    // }
 
-    st->delay /= st->divisor;
+    // st->delay /= st->divisor;
 // #endif
     // fprintf(stderr, "delay %d load(n) = %d\n", st->delay, n);
     // return st->delay;
@@ -301,8 +300,6 @@ void Worms::init() {
     _time = 0.f;
 
     // _delay = os::ticks();
-
-    srand(time(NULL));
 
     int n, i; //, ret, prio = 0;
     int cpus = rand() % 8 + 1; // TODO: tracks
@@ -339,14 +336,14 @@ void Worms::init() {
     //    return 1;
 
     // initialize rand number generator
-    // srand(time(0));
+    srand(time(NULL));
 
     // fprintf(stderr, "cols: %d lines: %d base: %d len: %d area: %d"
     //         " max: %d min: %d adj: %d divisor: %d\n",
     //         COLS, ROWS, AREA_BASE_LEN, AREA_EXT_LEN, AREA,
     //         AREA_MAX, AREA_MIN, (AREA) - (AREA_MIN), AREA_DIVISOR);
 
-    worm_max_length = AREA_BASE_LEN + AREA_EXT_LEN;
+    // worm_max_length = AREA_BASE_LEN + AREA_EXT_LEN;
 
     if (worm_max_length > WORM_MAX_LEN) {
         worm_max_length = WORM_MAX_LEN;

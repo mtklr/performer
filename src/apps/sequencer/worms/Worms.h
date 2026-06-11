@@ -45,25 +45,25 @@
 // worm speedup based on the current max worm length.  Here we
 // check a min and max screen area for worm length expansion.
 
-#define AREA_BASE_LEN   (WORM_MAX_LEN / 2)
-#define AREA_MINROWS    32
-#define AREA_MINCOLS    128
-#define AREA_MIN        (AREA_MINROWS * AREA_MINCOLS)
-#define AREA_MAXROWS    64
-#define AREA_MAXCOLS    256
-#define AREA_MAX        (AREA_MAXROWS * AREA_MAXCOLS)
-#define AREA            ((COLS * ROWS) < (AREA_MINROWS * AREA_MINCOLS) \
-                        ? (AREA_MINROWS * AREA_MINCOLS) : (COLS * ROWS))
-#define AREA_DIVISOR    ((AREA_MAX - AREA_MIN) / AREA_BASE_LEN)
-#define AREA_EXT_LEN    (((AREA - (AREA_MIN)) / (AREA_DIVISOR)) > \
-                        AREA_BASE_LEN ? AREA_BASE_LEN : \
-                        ((AREA - (AREA_MIN)) / (AREA_DIVISOR)))
+/* #define AREA_BASE_LEN   (WORM_MAX_LEN / 2) */
+/* #define AREA_MINROWS    32 */
+/* #define AREA_MINCOLS    128 */
+/* #define AREA_MIN        (AREA_MINROWS * AREA_MINCOLS) */
+/* #define AREA_MAXROWS    64 */
+/* #define AREA_MAXCOLS    256 */
+/* #define AREA_MAX        (AREA_MAXROWS * AREA_MAXCOLS) */
+/* #define AREA            ((COLS * ROWS) < (AREA_MINROWS * AREA_MINCOLS) \ */
+/*                         ? (AREA_MINROWS * AREA_MINCOLS) : (COLS * ROWS)) */
+/* #define AREA_DIVISOR    ((AREA_MAX - AREA_MIN) / AREA_BASE_LEN) */
+/* #define AREA_EXT_LEN    (((AREA - (AREA_MIN)) / (AREA_DIVISOR)) > \ */
+/*                         AREA_BASE_LEN ? AREA_BASE_LEN : \ */
+/*                         ((AREA - (AREA_MIN)) / (AREA_DIVISOR))) */
 
-#define MAX_LOADAVG   100
-#define MAX_NANOSEC   100000000
-#define MIN_NANOSEC   10000000
-#define MAX_MICROSEC  100000
-#define MIN_MICROSEC  10000
+/* #define MAX_LOADAVG   100 */
+/* #define MAX_NANOSEC   100000000 */
+/* #define MIN_NANOSEC   10000000 */
+/* #define MAX_MICROSEC  100000 */
+/* #define MIN_MICROSEC  10000 */
 
 typedef struct _WORM {
     int cpu;
