@@ -27,7 +27,7 @@ typedef struct {
 typedef struct {
     size_t size;
     size_t used;
-    Snowflake *flake;
+    Snowflake flake[MAX_SNOW];
 } Snowfall;
 
 static const float temperature = -8.0f;
@@ -35,7 +35,7 @@ static const int melt_threshold = (int) (-1.0f * temperature * (CONFIG_LCD_WIDTH
 static const float Pi = 3.1415926536f;
 static const uint8_t flake_colors[7] = { 0x3, 0x5, 0x7, 0x9, 0xa, 0xc, 0xf };
 
-Snowfall *snow;
+Snowfall snow;
 float wind;
 
 static uint8_t snow_fb[CONFIG_LCD_WIDTH * CONFIG_LCD_HEIGHT];
@@ -53,30 +53,15 @@ static void flake_init(Snowflake *flake, const int width) {
 }
 
 static Snowfall* snow_start(const int intensity, const int width) {
-    Snowfall *snow = (Snowfall *) std::calloc(1, sizeof (Snowfall));
-    // Snowfall *snow = new Snowfall; // works...
+    Snowfall *s = &snow;
+    s->size = MAX_SNOW;
+    s->used = intensity;
 
-    if (snow == NULL) {
-        // fprintf(stderr,"error: calloc snow\n");
-        return NULL;
+    for (size_t i = 0; i < s->used; i++) {
+        flake_init(&s->flake[i], width);
     }
 
-    snow->flake = (Snowflake *) std::calloc(MAX_SNOW, sizeof(Snowflake));
-    // snow->flake = new Snowflake; // ... crash, whyyyy... inside snow?
-
-    if (snow->flake == NULL) {
-        // fprintf(stderr,"error: calloc snow->flake\n");
-        return NULL;
-    }
-
-    snow->size = MAX_SNOW;
-    snow->used = intensity;
-
-    for (size_t i = 0; i < snow->used; i++) {
-        flake_init(&snow->flake[i], width);
-    }
-
-    return snow;
+    return s;
 }
 
 static int flake_blocked(Snowflake * flake, int x) {
@@ -138,25 +123,11 @@ void Snow::init() {
         snow_fb[i] = 0;
     }
 
-    snow = snow_start(INTENSITY, CONFIG_LCD_WIDTH);
+    Snowfall *s = &snow;
+    s = snow_start(INTENSITY, FB_WIDTH);
 
-    if (snow == NULL) {
+    if (s == NULL) {
         return;
-    }
-}
-
-void Snow::cleanup() {
-    if (snow->flake) {
-        std::free(snow->flake);
-        snow->flake = NULL;
-        // fprintf(stderr, "freed snow->flake\n");
-    }
-
-    if (snow) {
-        std::free(snow);
-        snow = NULL;
-
-        // fprintf(stderr,"freed snow\n");
     }
 }
 
@@ -170,7 +141,7 @@ void Snow::draw(Canvas &canvas) {
     canvas.fill();
 
     for (int i = 0; i < INTENSITY; i++) {
-        Snowflake *flake = &snow->flake[i];
+        Snowflake *flake = &snow.flake[i];
 
         flake->x += wind;
 

@@ -13,7 +13,6 @@ void SnowPage::enter() {
 }
 
 void SnowPage::exit() {
-    _snow.cleanup();
 }
 
 void SnowPage::draw(Canvas &canvas) {
