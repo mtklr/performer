@@ -1,5 +1,5 @@
-/* basically sideways snow with some other stuff */
-/* tftf - https://soundvision.bandcamp.com/album/mini-mod-ep-2025-remaster */
+// basically sideways snow with some other stuff
+// tftf - https://soundvision.bandcamp.com/album/mini-mod-ep-2025-remaster
 
 #include "Fish.h"
 
@@ -7,6 +7,7 @@
 
 #include "os/os.h"
 
+#include <cmath>
 #include <ctime>
 
 #define RANDF(x) ((float)rand()/((float)RAND_MAX/((float)x)))
@@ -26,7 +27,7 @@ static const uint16_t fish_bitmap[] = {
 };
 
 // 8 x 10
-uint8_t bubble_frame0[] = {
+static const uint8_t bubble_frame0[] = {
     0b00000000,
     0b00000000,
     0b00000000,
@@ -39,7 +40,7 @@ uint8_t bubble_frame0[] = {
     0b00000000
 };
 
-uint8_t bubble_frame1[] = {
+static const uint8_t bubble_frame1[] = {
     0b00000000,
     0b00000000,
     0b00000000,
@@ -52,7 +53,7 @@ uint8_t bubble_frame1[] = {
     0b01000000
 };
 
-uint8_t bubble_frame2[] = {
+static const uint8_t bubble_frame2[] = {
     0b00000000,
     0b00000000,
     0b00000000,
@@ -65,7 +66,7 @@ uint8_t bubble_frame2[] = {
     0b00000000
 };
 
-uint8_t bubble_frame3[] = {
+static const uint8_t bubble_frame3[] = {
     0b00000000,
     0b00000000,
     0b00000000,
@@ -78,7 +79,7 @@ uint8_t bubble_frame3[] = {
     0b01000000
 };
 
-uint8_t bubble_frame4[] = {
+static const uint8_t bubble_frame4[] = {
     0b00000000,
     0b00000000,
     0b00100000,
@@ -92,7 +93,7 @@ uint8_t bubble_frame4[] = {
 };
 
 // orig
-uint8_t bubble_frame5[] = {
+static const uint8_t bubble_frame5[] = {
     0b10000000,
     0b00100000,
     0b00000000,
@@ -105,7 +106,7 @@ uint8_t bubble_frame5[] = {
     0b00000000
 };
 
-uint8_t bubble_frame6[] = {
+static const uint8_t bubble_frame6[] = {
     0b00100000,
     0b00000000,
     0b10000000,
@@ -118,7 +119,7 @@ uint8_t bubble_frame6[] = {
     0b00000000
 };
 
-uint8_t bubble_frame7[] = {
+static const uint8_t bubble_frame7[] = {
     0b00000000,
     0b10000000,
     0b00100000,
@@ -131,7 +132,7 @@ uint8_t bubble_frame7[] = {
     0b00000000
 };
 
-uint8_t bubble_frame8[] = {
+static const uint8_t bubble_frame8[] = {
     0b10000000,
     0b00100000,
     0b00000000,
@@ -144,7 +145,7 @@ uint8_t bubble_frame8[] = {
     0b00000000
 };
 
-uint8_t bubble_frame9[] = {
+static const uint8_t bubble_frame9[] = {
     0b00000000,
     0b00100000,
     0b00000000,
@@ -157,7 +158,7 @@ uint8_t bubble_frame9[] = {
     0b00000000
 };
 
-uint8_t bubble_frame10[] = {
+static const uint8_t bubble_frame10[] = {
     0b00100000,
     0b00000000,
     0b01000000,
@@ -170,7 +171,7 @@ uint8_t bubble_frame10[] = {
     0b00000000
 };
 
-uint8_t bubble_frame11[] = {
+static const uint8_t bubble_frame11[] = {
     0b00000000,
     0b01000000,
     0b00000000,
@@ -183,7 +184,7 @@ uint8_t bubble_frame11[] = {
     0b00000000
 };
 
-uint8_t bubble_frame12[] = {
+static const uint8_t bubble_frame12[] = {
     0b01000000,
     0b00000000,
     0b00000000,
@@ -196,7 +197,7 @@ uint8_t bubble_frame12[] = {
     0b00000000
 };
 
-uint8_t *bubble_frames[13] = {
+static const uint8_t *bubble_frames[13] = {
     bubble_frame0,
     bubble_frame1,
     bubble_frame2,
@@ -222,7 +223,7 @@ typedef struct {
     float freq;
     float wobble;
     bool dir;
-    int draw_bubbles;
+    int bubbles;
     // int bindex;
     // uint8_t *bp;
 } Fishy;
@@ -234,7 +235,7 @@ int num_fish;
 int bx;
 int by;
 int bindex;
-uint8_t *bp;
+const uint8_t *bp;
 
 Fishy fishies[MAX_FISH];
 
@@ -248,7 +249,9 @@ void Fish::init() {
 
     srand(time(NULL));
 
-    for (int i = 0; i < MAX_FISH; i++) {
+    num_fish = rand() % MAX_FISH + 1;
+
+    for (int i = 0; i < num_fish; i++) {
         fishies[i].size = 1;
         fishies[i].color = fish_colors[rand() % 7];
         fishies[i].x = RANDF(256);
@@ -258,12 +261,10 @@ void Fish::init() {
         fishies[i].freq = RANDF(0.2f);
         fishies[i].wobble = 0.5f + RANDF(2.5f);
         fishies[i].dir = rand() % 2;
-        fishies[i].draw_bubbles = rand() % 2;
+        fishies[i].bubbles = rand() % 2;
         // fishies[i].bindex = rand() % 12;
         // fishies[i].bp = bubble_frames[rand() % 12];
     }
-
-    num_fish = rand() % (MAX_FISH / 2) + (MAX_FISH / 2) + 1;
 
     bp = bubble_frames[0];
 }
@@ -297,14 +298,14 @@ void Fish::draw(Canvas &canvas) {
             }
         }
 
-        int x = (int) floorf(fish->x);
-        int y = (int) floorf(fish->y + fish->wobble * sinf(fish->phase));
+        int x = (int) std::floor(fish->x);
+        int y = (int) std::floor(fish->y + fish->wobble * std::sin(fish->phase));
 
         canvas.setColor(fish->color);
 
         // draw fish
         for (int row = 0; row < 8; row++) {
-            const uint32_t row_data = fish_bitmap[row];
+            const uint16_t row_data = fish_bitmap[row];
 
             if (fish->dir == 0) { // move right
                 for (int col = 0; col < 16; col++) {
@@ -336,7 +337,7 @@ void Fish::draw(Canvas &canvas) {
 
             bindex %= 13;
             bp = bubble_frames[bindex++];
-            fish->draw_bubbles = rand() % 2;
+            fish->bubbles = rand() % 2;
 
             // see rant below
             // fish->bindex = fish->bindex % 13;
@@ -372,29 +373,28 @@ void Fish::draw(Canvas &canvas) {
 //
 // while i'm complaing, firing them off at different times would also be nice.
 
-    // only draw bubbles sometimes, this helps look better but still doesn't
-    // address above issue
-    if (fish->draw_bubbles == 1) {
         // draw bubbles
-        for (int row = 0; row < 10; row++) {
-            const uint8_t row_data = bp[row];
-            // const uint8_t row_data = fish->bp[row];
+        if (fish->bubbles == 1) {
+            for (int row = 0; row < 10; row++) {
+                const uint8_t row_data = bp[row];
+                // const uint8_t row_data = fish->bp[row];
 
-            if (fish->dir == 0 && bx < CONFIG_LCD_WIDTH - 1) { // move right
-                for (int col = 0; col < 8; col++) {
-                    if (row_data & (1 << (7 - col))) {
-                        canvas.fillRect(bx + col * SCALE, by + row * SCALE, SCALE, SCALE);
+                if (fish->dir == 0 && bx < CONFIG_LCD_WIDTH - 1) { // move right
+                    for (int col = 0; col < 8; col++) {
+                        if (row_data & (1 << (7 - col))) {
+                            canvas.fillRect(bx + col * SCALE, by + row * SCALE, SCALE, SCALE);
+                        }
                     }
-                }
-            } else if (fish->dir == 1 && bx > 0) { // move left
-                for (int col = 0; col < 8; col++) {
-                    if (row_data & (1 << (7 - col))) {
-                        canvas.fillRect(bx - col * SCALE, by + row * SCALE, SCALE, SCALE);
+                } else if (fish->dir == 1 && bx > 0) { // move left
+                    for (int col = 0; col < 8; col++) {
+                        if (row_data & (1 << (7 - col))) {
+                            canvas.fillRect(bx - col * SCALE, by + row * SCALE, SCALE, SCALE);
+                        }
                     }
                 }
             }
         }
-    }
+
         if (fish->dir == 0) {
             fish->x += fish->speed; // move right
         } else {
