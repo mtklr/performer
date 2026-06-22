@@ -40,7 +40,7 @@ static int worm_max_length = WORM_MAX_LEN;
 
 STATE state;
 
-static void move_worm(STATE *st, WORM *s) {
+static void move_worm(STATE *st, WORM *s, bool pulse) {
     int n = 0, dir = 0;
     int x = 0, y = 0;
 
@@ -95,7 +95,12 @@ static void move_worm(STATE *st, WORM *s) {
         int rnd;
 
         s->runlength--;
+
         rnd = rand() % 128;
+
+        if (pulse) {
+            rnd = rand() % 2 + 1;
+        }
 
         if (rnd == 1) {
             dir++;
@@ -123,65 +128,65 @@ static void move_worm(STATE *st, WORM *s) {
     s->y[0] = y;
 }
 
-static void grow_worm(STATE *st, WORM *s) {
-    // int newlen = get_cpu_load(st, s->cpu);
-    int newlen = rand() % (WORM_MAX_LEN - (WORM_MIN_LEN - 1)) + WORM_MIN_LEN;
-    int len = s->length;
+// static void grow_worm(STATE *st, WORM *s) {
+//     // int newlen = get_cpu_load(st, s->cpu);
+//     int newlen = rand() % (WORM_MAX_LEN - (WORM_MIN_LEN - 1)) + WORM_MIN_LEN;
+//     int len = s->length;
 
-    // fprintf(stderr, "grow: cpu %d len %d newlen %d\n", s->cpu, len, newlen);
+//     // fprintf(stderr, "grow: cpu %d len %d newlen %d\n", s->cpu, len, newlen);
 
-    if (newlen > len) {
-        int x, y;
+//     if (newlen > len) {
+//         int x, y;
 
-        x = s->x[len - 1];
-        y = s->y[len - 1];
+//         x = s->x[len - 1];
+//         y = s->y[len - 1];
 
-        switch(s->direction) {
-            case 0: y--;      break;
-            case 1: y--; x--; break;
-            case 2:      x--; break; //  -= 2; break;
-            case 3: y++; x--; break;
-            case 4: y++;      break;
-            case 5: y++; x++; break;
-            case 6:      x++; break; //  += 2; break;
-            case 7: y--; x++; break;
-        }
+//         switch(s->direction) {
+//             case 0: y--;      break;
+//             case 1: y--; x--; break;
+//             case 2:      x--; break; //  -= 2; break;
+//             case 3: y++; x--; break;
+//             case 4: y++;      break;
+//             case 5: y++; x++; break;
+//             case 6:      x++; break; //  += 2; break;
+//             case 7: y--; x++; break;
+//         }
 
-        len++;
+//         len++;
 
-        if (len >= worm_max_length) {
-            len = worm_max_length - 1;
-        }
+//         if (len >= worm_max_length) {
+//             len = worm_max_length - 1;
+//         }
 
-        s->x[len] = x;
-        s->y[len] = y;
-    } else if (newlen < len) {
-        len--;
+//         s->x[len] = x;
+//         s->y[len] = y;
+//     } else if (newlen < len) {
+//         len--;
 
-        if (len < WORM_MIN_LEN) {
-            len = WORM_MIN_LEN;
-        }
+//         if (len < WORM_MIN_LEN) {
+//             len = WORM_MIN_LEN;
+//         }
 
-        s->x[len + 1] = 0;
-        s->y[len + 1] = 0;
-    }
+//         s->x[len + 1] = 0;
+//         s->y[len + 1] = 0;
+//     }
 
-    s->length = len;
-    // return(len);
-}
+//     s->length = len;
+//     // return(len);
+// }
 
-static void save_worm(WORM *s) {
-    int n;
+// static void save_worm(WORM *s) {
+//     int n;
 
-    // save last worm position and coordinates
-    // for clearing later
-    for (n = s->length - 1; n >= 0; n--) {
-        s->x_prev[n] = s->x[n];
-        s->y_prev[n] = s->y[n];
-    }
+//     // save last worm position and coordinates
+//     // for clearing later
+//     for (n = s->length - 1; n >= 0; n--) {
+//         s->x_prev[n] = s->x[n];
+//         s->y_prev[n] = s->y[n];
+//     }
 
-    s->length_prev = s->length;
-}
+//     s->length_prev = s->length;
+// }
 
 void Worms::worm_put_rect(Canvas &canvas, int c, int y, int x, uint8_t color) {
     // if (x >= CONFIG_LCD_WIDTH)
@@ -201,14 +206,14 @@ void Worms::worm_put_rect(Canvas &canvas, int c, int y, int x, uint8_t color) {
     }
 }
 
-void Worms::clear_worm(Canvas &canvas, STATE *st, WORM *s) {
-    int n;
+// void Worms::clear_worm(Canvas &canvas, STATE *st, WORM *s) {
+//     int n;
 
-    for (n = s->length_prev - 1; n >= 0; n--) {
-        // worm_put_rect(canvas, 0, s->y_prev[n], s->x_prev[n] + 1, 0);
-        worm_put_rect(canvas, 0, s->y_prev[n] * 2, s->x_prev[n] * 2, 0);
-    }
-}
+//     for (n = s->length_prev - 1; n >= 0; n--) {
+//         // worm_put_rect(canvas, 0, s->y_prev[n], s->x_prev[n] + 1, 0);
+//         worm_put_rect(canvas, 0, s->y_prev[n] * 2, s->x_prev[n] * 2, 0);
+//     }
+// }
 
 void Worms::draw_worm(Canvas &canvas, STATE *st, WORM *s) {
     int n, div, mod, c;
@@ -246,18 +251,19 @@ void Worms::run_worms(Canvas &canvas) { //, STATE *st)
 
     for (n = 0; n < st->cpus; n++) {
         WORM *s = (WORM *) &st->worms[n];
+        bool pulse = (_pulse_state >> (n)) & 1;
 
         if (++s->count >= s->limit) {
             s->count = 0;
             // grow_worm(st, s);
-            move_worm(st, s);
-            clear_worm(canvas, st, s);
+            move_worm(st, s, pulse);
+            // clear_worm(canvas, st, s);
             s->limit = 4 - (s->length / (worm_max_length / 4));
 
             // fprintf(stderr, "length %d limit %d\n", s->length, s->limit);
         }
 
-        save_worm(s);
+        // save_worm(s);
 
         // update all worms even those sleeping to
         // maintain worm overwrite stacking order
@@ -270,7 +276,7 @@ void Worms::run_worms(Canvas &canvas) { //, STATE *st)
     // decrease base wait time if system load increases
     // range is 0-100 load average before reaching
     // minimum st->delay wait time
-    n = 50; // TODO: tempo? //get_system_load();
+    // n = 50; // TODO: tempo? //get_system_load();
 // #ifdef NANOSLEEP
 //     range = MAX_NANOSEC - MIN_NANOSEC;
 //     increment = range / MAX_LOADAVG;
@@ -298,11 +304,12 @@ Worms::Worms() {
 
 void Worms::init() {
     _time = 0.f;
+    _pulse_state = 0;
 
     // _delay = os::ticks();
 
     int n, i; //, ret, prio = 0;
-    int cpus = rand() % 8 + 1; // TODO: tracks
+    int cpus = rand() % CONFIG_CHANNEL_COUNT + 1; // TODO: tracks
     int speedup = 1;
 
     STATE *st = &state;
@@ -401,8 +408,9 @@ void Worms::init() {
     // return 0;
 }
 
-void Worms::update(float dt) {
+void Worms::update(float dt, uint8_t gates) {
     _time += dt;
+    _pulse_state = gates;
 }
 
 void Worms::draw(Canvas &canvas) {

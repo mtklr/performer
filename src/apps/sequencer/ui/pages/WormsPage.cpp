@@ -20,7 +20,7 @@ void WormsPage::draw(Canvas &canvas) {
     float dt = float(currentTicks - _lastTicks) / os::time::ms(1000);
     _lastTicks = currentTicks;
 
-    _worms.update(dt);
+    _worms.update(dt, _engine.gateOutput());
     _worms.draw(canvas);
 }
 

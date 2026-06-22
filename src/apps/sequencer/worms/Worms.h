@@ -105,10 +105,10 @@ public:
 
     void init();
 
-    void update(float dt);
+    void update(float dt, uint8_t gates);
     void draw(Canvas &canvas);
     void worm_put_rect(Canvas &canvas, int c, int y, int x, uint8_t color);
-    void clear_worm(Canvas &canvas, STATE *st, WORM *s);
+    // void clear_worm(Canvas &canvas, STATE *st, WORM *s);
     void draw_worm(Canvas &canvas, STATE *st, WORM *s);
     void run_worms(Canvas &canvas);
 
@@ -116,4 +116,6 @@ private:
     float _time;
 
     // uint32_t _delay;
+
+    uint8_t _pulse_state;
 };
