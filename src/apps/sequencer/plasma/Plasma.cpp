@@ -17,12 +17,12 @@
 #define FB_WIDTH CONFIG_LCD_WIDTH / FB_SCALE
 #define FB_HEIGHT CONFIG_LCD_HEIGHT / FB_SCALE
 
-static uint8_t plasma_fb[FB_WIDTH * FB_HEIGHT];
+uint8_t plasma_fb[FB_WIDTH * FB_HEIGHT];
 
 int a, b, c, d;
 
 static float dist(int a, int b, int c, int d) {
-    return sqrt((a - c) * (a - c) + (b - d) * (b - d));
+    return std::sqrt((a - c) * (a - c) + (b - d) * (b - d));
 }
 
 Plasma::Plasma() {
@@ -36,7 +36,7 @@ void Plasma::init() {
     a = rand() % 64 + 64;
     b = rand() % 64 + 64;
     c = rand() % 96 + 96;
-    d = rand() % 32 % 32;
+    d = rand() % 32;
 }
 
 void Plasma::update(float dt) {
@@ -50,21 +50,20 @@ void Plasma::draw(Canvas &canvas) {
 
     for (int y = 0; y < FB_HEIGHT; y++) {
         for (int x = 0; x < FB_WIDTH; x++) {
-            float value = sin(dist(x + (_time * 20), y, a, b) / 8) +
-                sin(dist(x, y, 64, 64) / 8) +
-                sin(dist(x, y + (_time * 20) / 7, c, d) / 7) +
-                sin(dist(x, y, 192, 100) / 8);
+            float v = std::sin(dist(x + (_time * 20), y, a, b) / 8) +
+                std::sin(dist(x, y, 64, 64) / 8) +
+                std::sin(dist(x, y + (_time * 20) / 7, c, d) / 7) +
+                std::sin(dist(x, y, 192, 100) / 8);
+            int color = (int) (4 + std::floor(v)) * 2;
+            int index = y * FB_WIDTH + x;
 
-            int color = ((4 + (int) floor(value)) * 2) % 16;
+            plasma_fb[index] = color % 16;
+            // plasma_fb[(index + 1) % (FB_WIDTH * FB_HEIGHT)] = color * 2;
+            // plasma_fb[(index + 2) % (FB_WIDTH * FB_HEIGHT)] = 15 - color;
+            // plasma_fb[(index + 3) % (FB_WIDTH * FB_HEIGHT)] = 15;
 
-            int id = y * FB_WIDTH + x;
+            canvas.setColor(plasma_fb[index]);
 
-            plasma_fb[id] = color;
-            // plasma_fb[id + 1] = color * 2;
-            // plasma_fb[id + 2] = 15 - color;
-            // plasma_fb[id + 3] = 15;
-
-            canvas.setColor(plasma_fb[id]);
 #ifdef PLASMA_LORES
             canvas.fillRect(x * FB_SCALE, y * FB_SCALE, FB_SCALE, FB_SCALE);
 #else
