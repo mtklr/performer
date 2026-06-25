@@ -1,4 +1,4 @@
-/* adapted from https://github.com/deadcodesoc/asnow.git */
+// adapted from - https://github.com/deadcodesoc/asnow.git
 
 #include "Snow.h"
 
@@ -6,6 +6,7 @@
 
 #include "os/os.h"
 
+#include <cmath>
 #include <ctime>
 
 #define RANDF(x) ((float)rand()/((float)RAND_MAX/((float)x)))
@@ -49,16 +50,13 @@ typedef struct {
 #ifdef SNOW_PILE
 static const float temperature = -8.0f;
 static const int melt_threshold = (int) (-1.0f * temperature * (FB_WIDTH * FB_HEIGHT) / 70);
+uint8_t snow_fb[FB_WIDTH * FB_HEIGHT];
 #endif
 static const float Pi = 3.1415926536f;
 static const uint8_t flake_colors[7] = { 0x3, 0x5, 0x7, 0x9, 0xa, 0xc, 0xf };
 
 Snowfall snow;
 float wind;
-
-#ifdef SNOW_PILE
-static uint8_t snow_fb[FB_WIDTH * FB_HEIGHT];
-#endif
 
 static void flake_init(Snowflake *flake, const int width) {
     flake->size = rand() % 2 + 1; // 1..2
@@ -89,7 +87,7 @@ static Snowfall* snow_start(const int intensity, const int width) {
 
 #ifdef SNOW_PILE
 static int flake_blocked(Snowflake * flake, int x) {
-    int y = (int) floorf(flake->y);
+    int y = (int) std::floor(flake->y);
 
     if (y + flake->size > FB_HEIGHT - 1) {
         flake->y = FB_HEIGHT - flake->size;
@@ -173,12 +171,12 @@ void Snow::draw(Canvas &canvas) {
         flake->x += wind;
 
         // wrap x from left to right
-        if (flake->x * 2 < 0) {
+        if (flake->x * FB_SCALE < 0) {
             flake->x = FB_WIDTH;
         }
 
         // % _WIDTH = wrap x from right to left
-        int x = (int) floorf(flake->x * FB_SCALE + flake->wobble * sinf(flake->phase)) % FB_WIDTH;
+        int x = (int) std::floor(flake->x * FB_SCALE + flake->wobble * std::sin(flake->phase)) % FB_WIDTH;
 
 #ifdef SNOW_PILE
         if (flake_blocked(flake, x) == 1) {
@@ -246,12 +244,14 @@ void Snow::draw(Canvas &canvas) {
 
 #ifdef SNOW_PILE
     // draw snow_fb
-    for (int x = 0; x < FB_WIDTH; x++) {
-        for (int y = 0; y < FB_HEIGHT; y++) {
-            if (snow_fb[y * FB_WIDTH + x] == 0) {
+    for (int y = 0; y < FB_HEIGHT; y++) {
+        for (int x = 0; x < FB_WIDTH; x++) {
+            int index = y * FB_WIDTH + x;
+
+            if (snow_fb[index] == 0) {
                 continue;
             }
-            canvas.setColor(snow_fb[y * FB_WIDTH + x]);
+            canvas.setColor(snow_fb[index]);
             canvas.fillRect(x * FB_SCALE, y * FB_SCALE, FB_SCALE, FB_SCALE);
         }
     }
