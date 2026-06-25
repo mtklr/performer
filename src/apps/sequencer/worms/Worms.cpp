@@ -1,32 +1,30 @@
-/* adapted from https://github.com/jeffmerkey/netware-screensaver-linux.git */
+// adapted from - https://github.com/jeffmerkey/netware-screensaver-linux.git
 
-/***************************************************************************
-*
-*   Copyright(c) Jeff V. Merkey 1997-2019.  All rights reserved.
-*
-*   Portions adapted from xscreensaver loadsnake program is
-*   portions Copyright (c) 2007-2011 Cosimo Streppone <cosimo@cpan.org>
-*
-*   Licensed under the MIT/X License
-*
-*   Permission is hereby granted, free of charge, to any person obtaining a copy
-*   of this software and associated documentation files (the "Software"), to
-*   deal in the Software without restriction, including without limitation
-*   the rights to use, copy, modify, merge, publish, distribute, sublicense,
-*   and/or sell copies of the Software, and to permit persons to whom the
-*   Software is furnished to do so, subject to the following conditions:
-*
-*   The above copyright notice and this permission notice shall be included
-*   in all copies or substantial portions of the Software.
-*
-*   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-*   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-*   DEALINGS IN THE SOFTWARE.
-**************************************************************************/
+/* Copyright(c) Jeff V. Merkey 1997-2019.  All rights reserved.
+
+Portions adapted from xscreensaver loadsnake program is
+portions Copyright (c) 2007-2011 Cosimo Streppone <cosimo@cpan.org>
+
+Licensed under the MIT/X License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to
+deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+*/
 
 #include "Worms.h"
 
@@ -34,9 +32,9 @@
 
 #include <ctime>
 
-uint8_t worm_colors[7] = { 0x3, 0x5, 0x7, 0x9, 0xa, 0xc, 0xf };
+static const uint8_t worm_colors[7] = { 0x3, 0x5, 0x7, 0x9, 0xa, 0xc, 0xf };
 
-static int worm_max_length = WORM_MAX_LEN;
+// int worm_max_length = WORM_MAX_LEN;
 
 STATE state;
 
@@ -44,14 +42,14 @@ static void move_worm(STATE *st, WORM *s, bool pulse) {
     int n = 0, dir = 0;
     int x = 0, y = 0;
 
-    /* worm head position */
+    // worm head position
     x = s->x[0];
     y = s->y[0];
 
-    /* and direction */
+    // and direction
     dir = s->direction;
 
-    /* 0=up, 2=right, 4=down, 6=left */
+    // 0=up, 2=right, 4=down, 6=left
     switch(dir) {
         case 0: y++;      break;    // up
         case 1: y++; x++; break;    // up right
@@ -63,7 +61,7 @@ static void move_worm(STATE *st, WORM *s, bool pulse) {
         case 7: y++; x--; break;    // up left
     }
 
-    /* Check bounds and change direction */
+    // Check bounds and change direction
     if (x < 0 && (dir >= 5 && dir <= 7)) {
         x = 1;
         dir -= 4;
@@ -117,13 +115,13 @@ static void move_worm(STATE *st, WORM *s, bool pulse) {
 
     s->direction = dir;
 
-    /* Copy x,y coords in "tail" positions */
+    // Copy x,y coords in "tail" positions
     for(n = s->length - 1; n > 0; n--) {
         s->x[n] = s->x[n-1];
         s->y[n] = s->y[n-1];
     }
 
-    /* New head position */
+    // New head position
     s->x[0] = x;
     s->y[0] = y;
 }
@@ -242,9 +240,9 @@ void Worms::run_worms(Canvas &canvas) { //, STATE *st)
     // reset columns and lines in case the screen was resized
     // worm_max_length = AREA_BASE_LEN + AREA_EXT_LEN;
 
-    if (worm_max_length > WORM_MAX_LEN) {
-        worm_max_length = WORM_MAX_LEN;
-    }
+    // if (worm_max_length > WORM_MAX_LEN) {
+    //     worm_max_length = WORM_MAX_LEN;
+    // }
 
     st->cols = COLS;
     st->rows = ROWS;
@@ -253,15 +251,15 @@ void Worms::run_worms(Canvas &canvas) { //, STATE *st)
         WORM *s = (WORM *) &st->worms[n];
         bool pulse = (_pulse_state >> (n)) & 1;
 
-        if (++s->count >= s->limit) {
-            s->count = 0;
+        // if (++s->count >= s->limit) {
+            // s->count = 0;
             // grow_worm(st, s);
             move_worm(st, s, pulse);
             // clear_worm(canvas, st, s);
-            s->limit = 4 - (s->length / (worm_max_length / 4));
+            // s->limit = 4 - (s->length / (worm_max_length / 4));
 
             // fprintf(stderr, "length %d limit %d\n", s->length, s->limit);
-        }
+        // }
 
         // save_worm(s);
 
@@ -310,7 +308,7 @@ void Worms::init() {
 
     int n, i; //, ret, prio = 0;
     int cpus = rand() % CONFIG_CHANNEL_COUNT + 1; // TODO: tracks
-    int speedup = 1;
+    // int speedup = 1;
 
     STATE *st = &state;
 
@@ -332,11 +330,11 @@ void Worms::init() {
         st->cpus = MAX_WORMS;
     }
 
-    if (speedup > 0) {
-        st->divisor = speedup;
-    } else {
-        st->divisor = 1;
-    }
+    // if (speedup > 0) {
+    //     st->divisor = speedup;
+    // } else {
+    //     st->divisor = 1;
+    // }
 
     // ret = init_ncurses();
     // if (ret < 0)
@@ -352,9 +350,9 @@ void Worms::init() {
 
     // worm_max_length = AREA_BASE_LEN + AREA_EXT_LEN;
 
-    if (worm_max_length > WORM_MAX_LEN) {
-        worm_max_length = WORM_MAX_LEN;
-    }
+    // if (worm_max_length > WORM_MAX_LEN) {
+    //     worm_max_length = WORM_MAX_LEN;
+    // }
 
     st->cols = COLS;
     st->rows = ROWS;
@@ -372,7 +370,7 @@ void Worms::init() {
         s->x[0] = rand() % (COLS - 1);
         s->y[0] = rand() % ROWS;
 
-        for (i=1; i < WORM_MAX_LEN; i++) {
+        for (i = 1; i < WORM_MAX_LEN; i++) {
            s->x[i] = s->x[0];
            s->y[i] = s->y[0];
         }
