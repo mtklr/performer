@@ -11,11 +11,19 @@
 
 #define RANDF(x) ((float)rand()/((float)RAND_MAX/((float)x)))
 #define MAX_SNOW 100
-#define INTENSITY 20
+#define SNOW_INTENSITY 20
+#define RAIN_INTENSITY 60
 
 // #define SNOW_LORES 1
 // #define SNOW_PILE 1
 // #define SNOW_SHAPES 1
+// #define RAIN 1
+
+#ifdef RAIN
+#define INTENSITY RAIN_INTENSITY
+#else
+#define INTENSITY SNOW_INTENSITY
+#endif
 
 #ifdef SNOW_LORES
 #define FB_SCALE 2
@@ -64,6 +72,13 @@ static void flake_init(Snowflake *flake, const int width) {
     flake->x = RANDF(width);
     flake->y = 0.0f;
     flake->speed = (0.3f + RANDF(1.2f)) / FB_SCALE;
+#ifdef RAIN
+#ifdef SNOW_LORES
+    flake->speed += 1.5f;
+#else
+    flake->speed += 3.0f;
+#endif
+#endif
     flake->phase = RANDF(2.0f * Pi);
     flake->freq = RANDF(0.2f);
     flake->wobble = 0.5f + RANDF(2.5f);
@@ -232,8 +247,13 @@ void Snow::draw(Canvas &canvas) {
                     break;
             }
 #else
+#ifdef RAIN
+            canvas.line(flake->x * FB_SCALE, flake->y * FB_SCALE,
+                    (flake->x + 1) * FB_SCALE, (flake->y + (rand() % 6 + 4)) * FB_SCALE);
+#else
             canvas.fillRect(x * FB_SCALE, flake->y * FB_SCALE, flake->size * FB_SCALE, flake->size * FB_SCALE);
-#endif
+#endif // RAIN
+#endif // SNOW_SHAPES
 
             flake->y += flake->speed;
             flake->phase += flake->freq;
