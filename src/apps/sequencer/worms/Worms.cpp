@@ -306,6 +306,8 @@ void Worms::init() {
 
     // _delay = os::ticks();
 
+    srand(time(NULL));
+
     int n, i; //, ret, prio = 0;
     int cpus = rand() % CONFIG_CHANNEL_COUNT + 1; // TODO: tracks
     // int speedup = 1;
@@ -339,9 +341,6 @@ void Worms::init() {
     // ret = init_ncurses();
     // if (ret < 0)
     //    return 1;
-
-    // initialize rand number generator
-    srand(time(NULL));
 
     // fprintf(stderr, "cols: %d lines: %d base: %d len: %d area: %d"
     //         " max: %d min: %d adj: %d divisor: %d\n",

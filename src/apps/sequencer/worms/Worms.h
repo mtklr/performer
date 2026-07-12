@@ -35,7 +35,7 @@ DEALINGS IN THE SOFTWARE.
 #define WORM_MIN_LEN    4
 #define WORM_MAX_LEN   18
 // #define WORM_TAIL_LEN   3
-#define MAX_WORMS      64
+#define MAX_WORMS       8
 #define WORM_SEG_HEIGHT 4
 #define WORM_SEG_WIDTH  4
 
@@ -97,7 +97,7 @@ typedef struct _STATE {
     // unsigned long long steal[MAX_WORMS];
     // unsigned long long guest[MAX_WORMS];
     // unsigned long long guest_nice[MAX_WORMS];
-    WORM worms[8];
+    WORM worms[MAX_WORMS];
 } STATE;
 
 class Worms {
