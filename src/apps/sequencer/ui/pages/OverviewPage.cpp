@@ -214,9 +214,12 @@ void OverviewPage::keyUp(KeyEvent &event) {
 void OverviewPage::keyPress(KeyPressEvent &event) {
     const auto &key = event.key();
 
+// Shift + F1-F5
+
 #ifdef CONFIG_ENABLE_INTRO
     if (key.is(Key::F0)) {
         if (key.shiftModifier()) {
+            _drawOverview = true;
             _manager.pages().intro.show();
         }
         event.consume();
@@ -226,6 +229,7 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
 #ifdef CONFIG_ENABLE_STARS
     if (key.is(Key::F1)) {
         if (key.shiftModifier()) {
+            _drawOverview = true;
             _manager.pages().stars.show();
         }
         event.consume();
@@ -235,6 +239,7 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
 #ifdef CONFIG_ENABLE_FIRE
     if (key.is(Key::F2)) {
         if (key.shiftModifier()) {
+            _drawOverview = true;
             _manager.pages().fire.show();
         }
         event.consume();
@@ -244,6 +249,7 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
 #ifdef CONFIG_ENABLE_LIFE
     if (key.is(Key::F3)) {
         if (key.shiftModifier()) {
+            _drawOverview = true;
             _manager.pages().life.show();
         }
         event.consume();
@@ -253,15 +259,19 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
 #ifdef CONFIG_ENABLE_PLASMA
     if (key.is(Key::F4)) {
         if (key.shiftModifier()) {
+            _drawOverview = true;
             _manager.pages().plasma.show();
         }
         event.consume();
     }
 #endif
 
+// Page + F1-F5
+
 #ifdef CONFIG_ENABLE_BOUNCE
     if (key.is(Key::F0)) {
-        if (!key.shiftModifier() && globalKeyState()[Key::Page]) {
+        if (!key.shiftModifier() && key.pageModifier()) {
+            _drawOverview = true;
             _manager.pages().bounce.show();
         }
         event.consume();
@@ -270,7 +280,8 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
 
 #ifdef CONFIG_ENABLE_WORMS
     if (key.is(Key::F1)) {
-        if (!key.shiftModifier() && globalKeyState()[Key::Page]) {
+        if (!key.shiftModifier() && key.pageModifier()) {
+            _drawOverview = true;
             _manager.pages().worms.show();
         }
         event.consume();
@@ -279,7 +290,8 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
 
 #ifdef CONFIG_ENABLE_SNOW
     if (key.is(Key::F2)) {
-        if (!key.shiftModifier() && globalKeyState()[Key::Page]) {
+        if (!key.shiftModifier() && key.pageModifier()) {
+            _drawOverview = true;
             _manager.pages().snow.show();
         }
         event.consume();
@@ -288,16 +300,30 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
 
 #ifdef CONFIG_ENABLE_FISH
     if (key.is(Key::F3)) {
-        if (!key.shiftModifier() && globalKeyState()[Key::Page]) {
+        if (!key.shiftModifier() && key.pageModifier()) {
+            _drawOverview = true;
             _manager.pages().fish.show();
         }
         event.consume();
     }
 #endif
 
+#ifdef CONFIG_ENABLE_CATS
+    if (key.is(Key::F4)) {
+        if (!key.shiftModifier() && key.pageModifier()) {
+            _drawOverview = true;
+            _manager.pages().cats.show();
+        }
+        event.consume();
+    }
+#endif
+
+// F1-F5, no modifiers
+
 #ifdef CONFIG_ENABLE_VU
     if (key.is(Key::F0)) {
-        if (!key.shiftModifier() && !globalKeyState()[Key::Page]) {
+        if (!key.shiftModifier() && !key.pageModifier()) {
+            _drawOverview = true;
             _manager.pages().vu.show();
         }
         event.consume();
@@ -306,7 +332,8 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
 
 #ifdef CONFIG_ENABLE_VUBAR
     if (key.is(Key::F1)) {
-        if (!key.shiftModifier() && !globalKeyState()[Key::Page]) {
+        if (!key.shiftModifier() && !key.pageModifier()) {
+            _drawOverview = true;
             _manager.pages().vuBar.show();
         }
         event.consume();
@@ -315,7 +342,8 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
 
 #ifdef CONFIG_ENABLE_VULINE
     if (key.is(Key::F2)) {
-        if (!key.shiftModifier() && !globalKeyState()[Key::Page]) {
+        if (!key.shiftModifier() && !key.pageModifier()) {
+            _drawOverview = true;
             _manager.pages().vuLine.show();
         }
         event.consume();
@@ -323,14 +351,14 @@ void OverviewPage::keyPress(KeyPressEvent &event) {
 #endif
 
     if (key.is(Key::F3)) {
-        if (!key.shiftModifier() && !globalKeyState()[Key::Page]) {
+        if (!key.shiftModifier() && !key.pageModifier()) {
             _drawPageStepCount = !_drawPageStepCount;
         }
         event.consume();
     }
 
     if (key.is(Key::F4)) {
-        if (!key.shiftModifier() && !globalKeyState()[Key::Page]) {
+        if (!key.shiftModifier() && !key.pageModifier()) {
             _drawOverview = !_drawOverview;
         }
         event.consume();

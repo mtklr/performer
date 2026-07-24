@@ -60,16 +60,19 @@
 
 
 #define CONFIG_ENABLE_ASTEROIDS
-#define CONFIG_ENABLE_INTRO
+#define CONFIG_ENABLE_INTRO     // Shift + F1 from Overview page
 // #define CONFIG_STARTUP_INTRO
-#define CONFIG_ENABLE_STARS
-// #define CONFIG_ENABLE_FIRE
-#define CONFIG_ENABLE_LIFE
-// #define CONFIG_ENABLE_PLASMA // crashes stm32
-#define CONFIG_ENABLE_BOUNCE
-#define CONFIG_ENABLE_WORMS
-#define CONFIG_ENABLE_SNOW
-#define CONFIG_ENABLE_FISH
-#define CONFIG_ENABLE_VU
-#define CONFIG_ENABLE_VUBAR
-#define CONFIG_ENABLE_VULINE
+#define CONFIG_ENABLE_STARS     // Shift + F2
+// #define CONFIG_ENABLE_FIRE      // Shift + F3
+#define CONFIG_ENABLE_LIFE      // Shift + F4
+// #define CONFIG_ENABLE_PLASMA    // Shift + F5, *** crashes/resets stm32
+#define CONFIG_ENABLE_BOUNCE    // Page + F1
+#define CONFIG_ENABLE_WORMS     // Page + F2
+#define CONFIG_ENABLE_SNOW      // Page + F3
+#define CONFIG_ENABLE_FISH      // Page + F4
+// #define CONFIG_ENABLE_CATS      // placeholder, Page + F5
+#define CONFIG_ENABLE_VU        // F1
+#define CONFIG_ENABLE_VUBAR     // F2
+#define CONFIG_ENABLE_VULINE    // F3
+                                // F4 toggles step/page count in Overview
+                                // F5 toggles blank screen in Overview

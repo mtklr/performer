@@ -51,7 +51,7 @@ void VuLinePage::keyPress(KeyPressEvent &event) {
     }
 
     if (key.is(Key::F2)) {
-        if (!key.shiftModifier() && !globalKeyState()[Key::Page]) {
+        if (!key.shiftModifier() && !key.pageModifier()) {
             BasePage::close();
             return;
         }
