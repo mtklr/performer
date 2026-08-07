@@ -358,10 +358,13 @@ void NoteSequenceEditPage::keyPress(KeyPressEvent &event) {
 void NoteSequenceEditPage::encoder(EncoderEvent &event) {
     auto &sequence = _project.selectedNoteSequence();
     const auto &scale = sequence.selectedScale(_project.scale());
+    bool shift = globalKeyState()[Key::Shift];
 
     if (_stepSelection.any()) {
         _showDetail = true;
         _showDetailTicks = os::ticks();
+    } else if (shift) {
+        sequence.shiftSteps(_stepSelection.selected(), event.value());
     } else {
         return;
     }
@@ -369,7 +372,6 @@ void NoteSequenceEditPage::encoder(EncoderEvent &event) {
     for (size_t stepIndex = 0; stepIndex < sequence.steps().size(); ++stepIndex) {
         if (_stepSelection[stepIndex]) {
             auto &step = sequence.step(stepIndex);
-            bool shift = globalKeyState()[Key::Shift];
             switch (layer()) {
             case Layer::Gate:
                 step.setGate(event.value() > 0);
