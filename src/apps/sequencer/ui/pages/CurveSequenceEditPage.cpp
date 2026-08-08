@@ -197,7 +197,8 @@ void CurveSequenceEditPage::draw(Canvas &canvas) {
             SequencePainter::drawProbability(
                 canvas,
                 x + 2, bottomY, stepWidth - 4, 2,
-                step.shapeVariationProbability(), 8
+                step.shapeVariationProbability(), 8,
+                step.gate()
             );
             break;
         case Layer::Min:
@@ -222,7 +223,8 @@ void CurveSequenceEditPage::draw(Canvas &canvas) {
             SequencePainter::drawProbability(
                 canvas,
                 x + 2, bottomY, stepWidth - 4, 2,
-                step.gateProbability() + 1, CurveSequence::GateProbability::Range
+                step.gateProbability() + 1, CurveSequence::GateProbability::Range,
+                step.gate()
             );
             break;
         case Layer::Last:
@@ -510,7 +512,8 @@ void CurveSequenceEditPage::drawDetail(Canvas &canvas, const CurveSequence::Step
         SequencePainter::drawProbability(
             canvas,
             64 + 32 + 8, 32 - 4, 64 - 16, 8,
-            step.shapeVariationProbability(), 8
+            step.shapeVariationProbability(), 8,
+            step.gate()
         );
         str.reset();
         str("%.1f%%", 100.f * step.shapeVariationProbability() / 8.f);
@@ -524,7 +527,8 @@ void CurveSequenceEditPage::drawDetail(Canvas &canvas, const CurveSequence::Step
         SequencePainter::drawProbability(
             canvas,
             64 + 32 + 8, 32 - 4, 64 - 16, 8,
-            step.gateProbability() + 1, CurveSequence::GateProbability::Range
+            step.gateProbability() + 1, CurveSequence::GateProbability::Range,
+            step.gate()
         );
         str.reset();
         str("%.1f%%", 100.f * (step.gateProbability() + 1.f) / CurveSequence::GateProbability::Range);
