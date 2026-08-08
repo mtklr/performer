@@ -134,60 +134,80 @@ void NoteSequenceEditPage::draw(Canvas &canvas) {
         }
 
         switch (layer()) {
-        case Layer::Gate:
+        case Layer::Gate: {
+            // show notes for active gates
+            if (step.gate()) {
+                int rootNote = sequence.selectedRootNote(_model.project().rootNote());
+                canvas.setColor(0x7);
+                FixedStringBuilder<8> str;
+                scale.noteName(str, step.note(), rootNote, Scale::Short1);
+                canvas.drawText(x + (stepWidth - canvas.textWidth(str) + 1) / 2, y + 20, str);
+                str.reset();
+                scale.noteName(str, step.note(), rootNote, Scale::Short2);
+                canvas.drawText(x + (stepWidth - canvas.textWidth(str) + 1) / 2, y + 27, str);
+            }
             break;
-        case Layer::GateProbability:
+        }
+        case Layer::GateProbability: {
             SequencePainter::drawProbability(
                 canvas,
                 x + 2, y + 18, stepWidth - 4, 2,
-                step.gateProbability() + 1, NoteSequence::GateProbability::Range
+                step.gateProbability() + 1, NoteSequence::GateProbability::Range,
+                step.gate()
             );
             break;
+        }
         case Layer::GateOffset:
             SequencePainter::drawOffset(
                 canvas,
                 x + 2, y + 18, stepWidth - 4, 2,
-                step.gateOffset(), NoteSequence::GateOffset::Min - 1, NoteSequence::GateOffset::Max + 1
+                step.gateOffset(), NoteSequence::GateOffset::Min - 1, NoteSequence::GateOffset::Max + 1,
+                step.gate()
             );
             break;
         case Layer::Retrigger:
             SequencePainter::drawRetrigger(
                 canvas,
                 x, y + 18, stepWidth, 2,
-                step.retrigger() + 1, NoteSequence::Retrigger::Range
+                step.retrigger() + 1, NoteSequence::Retrigger::Range,
+                step.gate()
             );
             break;
         case Layer::RetriggerProbability:
             SequencePainter::drawProbability(
                 canvas,
                 x + 2, y + 18, stepWidth - 4, 2,
-                step.retriggerProbability() + 1, NoteSequence::RetriggerProbability::Range
+                step.retriggerProbability() + 1, NoteSequence::RetriggerProbability::Range,
+                step.gate()
             );
             break;
         case Layer::Length:
             SequencePainter::drawLength(
                 canvas,
                 x + 2, y + 18, stepWidth - 4, 6,
-                step.length() + 1, NoteSequence::Length::Range
+                step.length() + 1, NoteSequence::Length::Range,
+                step.gate()
             );
             break;
         case Layer::LengthVariationRange:
             SequencePainter::drawLengthRange(
                 canvas,
                 x + 2, y + 18, stepWidth - 4, 6,
-                step.length() + 1, step.lengthVariationRange(), NoteSequence::Length::Range
+                step.length() + 1, step.lengthVariationRange(), NoteSequence::Length::Range,
+                step.gate()
             );
             break;
         case Layer::LengthVariationProbability:
             SequencePainter::drawProbability(
                 canvas,
                 x + 2, y + 18, stepWidth - 4, 2,
-                step.lengthVariationProbability() + 1, NoteSequence::LengthVariationProbability::Range
+                step.lengthVariationProbability() + 1, NoteSequence::LengthVariationProbability::Range,
+                step.gate()
             );
             break;
         case Layer::Note: {
             int rootNote = sequence.selectedRootNote(_model.project().rootNote());
-            canvas.setColor(0xf);
+            canvas.setColor(step.gate() ? 0xf : 0x7); // highlight active notes
             FixedStringBuilder<8> str;
             scale.noteName(str, step.note(), rootNote, Scale::Short1);
             canvas.drawText(x + (stepWidth - canvas.textWidth(str) + 1) / 2, y + 20, str);
@@ -197,7 +217,7 @@ void NoteSequenceEditPage::draw(Canvas &canvas) {
             break;
         }
         case Layer::NoteVariationRange: {
-            canvas.setColor(0xf);
+            canvas.setColor(step.gate() ? 0xf : 0x7);
             FixedStringBuilder<8> str("%d", step.noteVariationRange());
             canvas.drawText(x + (stepWidth - canvas.textWidth(str) + 1) / 2, y + 20, str);
             break;
@@ -206,18 +226,20 @@ void NoteSequenceEditPage::draw(Canvas &canvas) {
             SequencePainter::drawProbability(
                 canvas,
                 x + 2, y + 18, stepWidth - 4, 2,
-                step.noteVariationProbability() + 1, NoteSequence::NoteVariationProbability::Range
+                step.noteVariationProbability() + 1, NoteSequence::NoteVariationProbability::Range,
+                step.gate()
             );
             break;
         case Layer::Slide:
             SequencePainter::drawSlide(
                 canvas,
                 x + 4, y + 18, stepWidth - 8, 4,
-                step.slide()
+                step.slide(),
+                step.gate()
             );
             break;
         case Layer::Condition: {
-            canvas.setColor(0xf);
+            canvas.setColor(step.gate() ? 0xf : 0x7);
             FixedStringBuilder<8> str;
             Types::printCondition(str, step.condition(), Types::ConditionFormat::Short1);
             canvas.drawText(x + (stepWidth - canvas.textWidth(str) + 1) / 2, y + 20, str);
@@ -597,7 +619,8 @@ void NoteSequenceEditPage::drawDetail(Canvas &canvas, const NoteSequence::Step &
         SequencePainter::drawProbability(
             canvas,
             64 + 32 + 8, 32 - 4, 64 - 16, 8,
-            step.gateProbability() + 1, NoteSequence::GateProbability::Range
+            step.gateProbability() + 1, NoteSequence::GateProbability::Range,
+            step.gate()
         );
         str.reset();
         str("%.1f%%", 100.f * (step.gateProbability() + 1.f) / NoteSequence::GateProbability::Range);
@@ -608,7 +631,8 @@ void NoteSequenceEditPage::drawDetail(Canvas &canvas, const NoteSequence::Step &
         SequencePainter::drawOffset(
             canvas,
             64 + 32 + 8, 32 - 4, 64 - 16, 8,
-            step.gateOffset(), NoteSequence::GateOffset::Min - 1, NoteSequence::GateOffset::Max + 1
+            step.gateOffset(), NoteSequence::GateOffset::Min - 1, NoteSequence::GateOffset::Max + 1,
+            step.gate()
         );
         str.reset();
         str("%.1f%%", 100.f * step.gateOffset() / float(NoteSequence::GateOffset::Max + 1));
@@ -619,7 +643,8 @@ void NoteSequenceEditPage::drawDetail(Canvas &canvas, const NoteSequence::Step &
         SequencePainter::drawRetrigger(
             canvas,
             64+ 32 + 8, 32 - 4, 64 - 16, 8,
-            step.retrigger() + 1, NoteSequence::Retrigger::Range
+            step.retrigger() + 1, NoteSequence::Retrigger::Range,
+            step.gate()
         );
         str.reset();
         str("%d", step.retrigger() + 1);
@@ -630,7 +655,8 @@ void NoteSequenceEditPage::drawDetail(Canvas &canvas, const NoteSequence::Step &
         SequencePainter::drawProbability(
             canvas,
             64 + 32 + 8, 32 - 4, 64 - 16, 8,
-            step.retriggerProbability() + 1, NoteSequence::RetriggerProbability::Range
+            step.retriggerProbability() + 1, NoteSequence::RetriggerProbability::Range,
+            step.gate()
         );
         str.reset();
         str("%.1f%%", 100.f * (step.retriggerProbability() + 1.f) / NoteSequence::RetriggerProbability::Range);
@@ -641,7 +667,8 @@ void NoteSequenceEditPage::drawDetail(Canvas &canvas, const NoteSequence::Step &
         SequencePainter::drawLength(
             canvas,
             64 + 32 + 8, 32 - 4, 64 - 16, 8,
-            step.length() + 1, NoteSequence::Length::Range
+            step.length() + 1, NoteSequence::Length::Range,
+            step.gate()
         );
         str.reset();
         str("%.1f%%", 100.f * (step.length() + 1.f) / NoteSequence::Length::Range);
@@ -652,7 +679,8 @@ void NoteSequenceEditPage::drawDetail(Canvas &canvas, const NoteSequence::Step &
         SequencePainter::drawLengthRange(
             canvas,
             64 + 32 + 8, 32 - 4, 64 - 16, 8,
-            step.length() + 1, step.lengthVariationRange(), NoteSequence::Length::Range
+            step.length() + 1, step.lengthVariationRange(), NoteSequence::Length::Range,
+            step.gate()
         );
         str.reset();
         str("%.1f%%", 100.f * (step.lengthVariationRange()) / NoteSequence::Length::Range);
@@ -663,7 +691,8 @@ void NoteSequenceEditPage::drawDetail(Canvas &canvas, const NoteSequence::Step &
         SequencePainter::drawProbability(
             canvas,
             64 + 32 + 8, 32 - 4, 64 - 16, 8,
-            step.lengthVariationProbability() + 1, NoteSequence::LengthVariationProbability::Range
+            step.lengthVariationProbability() + 1, NoteSequence::LengthVariationProbability::Range,
+            step.gate()
         );
         str.reset();
         str("%.1f%%", 100.f * (step.lengthVariationProbability() + 1.f) / NoteSequence::LengthVariationProbability::Range);
@@ -686,7 +715,8 @@ void NoteSequenceEditPage::drawDetail(Canvas &canvas, const NoteSequence::Step &
         SequencePainter::drawProbability(
             canvas,
             64 + 32 + 8, 32 - 4, 64 - 16, 8,
-            step.noteVariationProbability() + 1, NoteSequence::NoteVariationProbability::Range
+            step.noteVariationProbability() + 1, NoteSequence::NoteVariationProbability::Range,
+            step.gate()
         );
         str.reset();
         str("%.1f%%", 100.f * (step.noteVariationProbability() + 1.f) / NoteSequence::NoteVariationProbability::Range);
