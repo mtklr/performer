@@ -93,6 +93,19 @@ void NoteSequenceEditPage::draw(Canvas &canvas) {
     SequencePainter::drawLoopStart(canvas, (sequence.firstStep() - stepOffset) * stepWidth + 1, loopY, stepWidth - 2);
     SequencePainter::drawLoopEnd(canvas, (sequence.lastStep() - stepOffset) * stepWidth + 1, loopY, stepWidth - 2);
 
+
+    if (layer() == Layer::GateOffset) {
+        if (sequence.randomGateOffset()) {
+            canvas.setColor(0xf);
+            canvas.drawText(169, 8 - 2, "(R)");
+            // canvas.fillRect(165, 1, 7, 7);
+            // canvas.setColor(0);
+            // canvas.point(170, 2);
+            // canvas.point(168, 4);
+            // canvas.point(166, 6);
+        }
+    }
+
     for (int i = 0; i < StepCount; ++i) {
         int stepIndex = stepOffset + i;
         const auto &step = sequence.step(stepIndex);

@@ -229,6 +229,7 @@ void NoteSequence::clear() {
     setRunMode(Types::RunMode::Forward);
     setFirstStep(0);
     setLastStep(15);
+    setRandomGateOffset(false);
 
     clearSteps();
 }
@@ -288,6 +289,7 @@ void NoteSequence::write(VersionedSerializedWriter &writer) const {
     writer.write(_runMode.base);
     writer.write(_firstStep.base);
     writer.write(_lastStep.base);
+    writer.write(_randomGateOffset);
 
     writeArray(writer, _steps);
 }
@@ -304,6 +306,7 @@ void NoteSequence::read(VersionedSerializedReader &reader) {
     reader.read(_runMode.base);
     reader.read(_firstStep.base);
     reader.read(_lastStep.base);
+    reader.read(_randomGateOffset);
 
     readArray(reader, _steps);
 }

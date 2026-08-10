@@ -17,6 +17,7 @@ public:
         ResetMeasure,
         Scale,
         RootNote,
+        RandomGateOffset,
         Last
     };
 
@@ -92,6 +93,7 @@ private:
         case ResetMeasure:      return "Reset Measure";
         case Scale:             return "Scale";
         case RootNote:          return "Root Note";
+        case RandomGateOffset:  return "Random Offset";
         case Last:              break;
         }
         return nullptr;
@@ -124,6 +126,9 @@ private:
         case RootNote:
             _sequence->printRootNote(str);
             break;
+        case RandomGateOffset:
+            _sequence->printRandomGateOffset(str);
+            break;
         case Last:
             break;
         }
@@ -152,6 +157,9 @@ private:
         case RootNote:
             _sequence->editRootNote(value, shift);
             break;
+        case RandomGateOffset:
+            _sequence->editRandomGateOffset(value, shift);
+            break;
         case Last:
             break;
         }
@@ -171,6 +179,7 @@ private:
             return Scale::Count + 1;
         case RootNote:
             return 12 + 1;
+        case RandomGateOffset:
         case Last:
             break;
         }
@@ -193,6 +202,7 @@ private:
             return _sequence->indexedScale();
         case RootNote:
             return _sequence->indexedRootNote();
+        case RandomGateOffset:
         case Last:
             break;
         }
@@ -215,6 +225,7 @@ private:
             return _sequence->setIndexedScale(index);
         case RootNote:
             return _sequence->setIndexedRootNote(index);
+        case RandomGateOffset:
         case Last:
             break;
         }

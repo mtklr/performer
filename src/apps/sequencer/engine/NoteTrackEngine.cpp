@@ -305,6 +305,11 @@ void NoteTrackEngine::triggerStep(uint32_t tick, uint32_t divisor) {
 
     uint32_t gateOffset = (divisor * step.gateOffset()) / (NoteSequence::GateOffset::Max + 1);
 
+    // random gate offset (in offset range)
+    if (sequence.randomGateOffset()) {
+        gateOffset = (divisor * rng.nextRange(step.gateOffset())) / (NoteSequence::GateOffset::Max + 1);
+    }
+
     bool stepGate = evalStepGate(step, _noteTrack.gateProbabilityBias()) || useFillGates;
     if (stepGate) {
         stepGate = evalStepCondition(step, _sequenceState.iteration(), useFillCondition, _prevCondition);

@@ -399,6 +399,21 @@ public:
         str("%d", lastStep() + 1);
     }
 
+    // randomGateOffset
+
+    bool randomGateOffset() const { return _randomGateOffset; }
+    void setRandomGateOffset(bool randomGateOffset) {
+        _randomGateOffset = randomGateOffset;
+    }
+
+    void editRandomGateOffset(int value, bool shift) {
+        setRandomGateOffset(value > 0);
+    }
+
+    void printRandomGateOffset(StringBuilder &str) const {
+        ModelUtils::printYesNo(str, randomGateOffset());
+    }
+
     // steps
 
     const StepArray &steps() const { return _steps; }
@@ -458,6 +473,7 @@ private:
     Routable<Types::RunMode> _runMode;
     Routable<uint8_t> _firstStep;
     Routable<uint8_t> _lastStep;
+    bool _randomGateOffset;
 
     StepArray _steps;
 
