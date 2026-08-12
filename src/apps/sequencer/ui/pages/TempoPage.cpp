@@ -19,7 +19,7 @@ void TempoPage::exit() {
 }
 
 void TempoPage::draw(Canvas &canvas) {
-    WindowPainter::drawFrame(canvas, 16, 16, 256 - 32, 32);
+    WindowPainter::drawFrame(canvas, 16, 20, 256 - 32, 24);
 
     canvas.setBlendMode(BlendMode::Set);
     canvas.setFont(Font::Small);
